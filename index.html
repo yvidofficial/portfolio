@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divy Garg — Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header / Navigation -->
+    <header class="site-header">
+        <nav class="nav-container">
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link active" data-target="work-page">WORK</a></li>
+                <li><a href="#" class="nav-link" data-target="contact-page">CONTACT</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+
+        <!-- WORK PAGE -->
+        <section id="work-page" class="page active-page">
+            <div class="hero-section">
+                <!-- Centered Logo Avatar -->
+                <div class="centered-logo-container">
+                    <img src="avatar.jpg" alt="Divy Garg Logo" class="profile-logo-center" id="profileModalBtn" title="Click for Bio & Info">
+                </div>
+                <h1>Hi, I'm Divy Garg!</h1>
+                <p class="scroll-hint">Scroll down to see my work!</p>
+            </div>
+
+            <!-- Category Filter Buttons -->
+            <div class="filter-container">
+                <button class="filter-btn active" data-filter="All">All</button>
+                <button class="filter-btn" data-filter="Event Recaps">Event Recaps</button>
+                <button class="filter-btn" data-filter="Podcast Highlights">Podcast Highlights</button>
+                <button class="filter-btn" data-filter="Real Estate">Real Estate</button>
+                <button class="filter-btn" data-filter="Hospitality Showcase">Hospitality Showcase</button>
+            </div>
+
+            <!-- 3D Spiral Carousel Stage -->
+            <div class="carousel-stage-wrapper">
+                <button class="carousel-nav-btn prev-btn" id="prevBtn">&#10094;</button>
+                
+                <div class="carousel-container" id="carouselContainer">
+                    <!-- Carousel cards injected dynamically -->
+                </div>
+
+                <button class="carousel-nav-btn next-btn" id="nextBtn">&#10095;</button>
+            </div>
+            <div class="carousel-indicators" id="carouselIndicators"></div>
+        </section>
+
+        <!-- CONTACT PAGE -->
+        <section id="contact-page" class="page">
+            <div class="contact-header">
+                <h2>CONTACT</h2>
+            </div>
+
+            <div class="contact-container">
+                <form class="contact-form" action="https://formspree.io/f/xzdnabey" method="POST">
+                    <div class="form-group">
+                        <label for="name">Name *</label>
+                        <input type="text" id="name" name="name" placeholder="Your Name..." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" placeholder="Your Email Address..." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Message *</label>
+                        <textarea id="message" name="message" rows="5" placeholder="Your Message..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Submit</button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Profile Info Modal Popup -->
+    <div id="bioModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModal">&times;</span>
+            <div class="modal-header-info">
+                <img src="avatar.jpg" alt="Divy Garg" class="modal-avatar">
+                <h2>Divy Garg</h2>
+            </div>
+            <div class="modal-details">
+                <p><strong>Age:</strong> 20</p>
+                <p><strong>Location:</strong> 🇮🇳 Delhi, India</p>
+                <p><strong>Phone:</strong> <a href="tel:+919306101719">+91 9306101719</a></p>
+                <p><strong>Instagram:</strong> <a href="https://instagram.com/yvid_official" target="_blank">@yvid_official</a></p>
+                <div class="bio-box">
+                    <p><strong>Bio:</strong> Video editor & creator specializing in cinematic event recaps, podcast highlights, real estate showcases, and social shorts.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p>Created by Divy Garg</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Page Navigation Switcher
+        const navLinks = document.querySelectorAll('.nav-link');
+        const pages = document.querySelectorAll('.page');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('data-target');
+
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+
+                pages.forEach(page => {
+                    page.classList.remove('active-page');
+                    if (page.id === targetId) {
+                        page.classList.add('active-page');
+                    }
+                });
+                window.scrollTo(0, 0);
+            });
+        });
+
+        // Video Data Source
+        const videoData = [
+            {
+                "title": "Hackathon",
+                "category": "Event Recaps",
+                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784721797/fashion_2_icrhx4.mp4"
+            },
+            {
+                "title": "Doctor",
+                "category": "Podcast Highlights",
+                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784723320/fashion_5_zrq5sn.mp4"
+            },
+            {
+                "title": "Canadian Realtor",
+                "category": "Real Estate",
+                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784722499/fashion_3_uvpnqs.mp4"
+            },
+            {
+                "title": "Indian Realtor",
+                "category": "Real Estate",
+                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784722074/fashion_1_ty2szd.mp4"
+            },
+            {
+                "title": "Resort",
+                "category": "Hospitality Showcase",
+                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784723336/fashion_4_o5fv8f.mp4"
+            }
+        ];
+
+        let currentCategoryVideos = [...videoData];
+        let currentIndex = 0;
+
+        function renderCarousel() {
+            const container = document.getElementById('carouselContainer');
+            const indicators = document.getElementById('carouselIndicators');
+            container.innerHTML = '';
+            indicators.innerHTML = '';
+
+            if (currentCategoryVideos.length === 0) {
+                container.innerHTML = `<div style="display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#888;">No reels found in this category.</div>`;
+                return;
+            }
+
+            currentCategoryVideos.forEach((video, index) => {
+                const card = document.createElement('div');
+                card.className = 'carousel-card';
+                
+                let positionClass = 'hide';
+                if (index === currentIndex) {
+                    positionClass = 'card-center';
+                } else if (index === (currentIndex - 1 + currentCategoryVideos.length) % currentCategoryVideos.length) {
+                    positionClass = 'card-left';
+                } else if (index === (currentIndex + 1) % currentCategoryVideos.length) {
+                    positionClass = 'card-right';
+                }
+                card.classList.add(positionClass);
+
+                card.innerHTML = `
+                    <div class="video-wrapper" style="width:100%; height:100%;">
+                        <video controls muted playsinline style="width:100%; height:100%; object-fit:contain; background-color:#000000;">
+                            <source src="${video.src}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <div class="reel-overlay-info">
+                        <span class="reel-category">${video.category}</span>
+                        <h3 class="reel-title">${video.title}</h3>
+                    </div>
+                `;
+
+                // Clicking side cards shifts them into center view
+                card.addEventListener('click', () => {
+                    if (positionClass === 'card-left') {
+                        prevSlide();
+                    } else if (positionClass === 'card-right') {
+                        nextSlide();
+                    }
+                });
+
+                container.appendChild(card);
+
+                // Indicator dot
+                const dot = document.createElement('span');
+                dot.className = `indicator-dot ${index === currentIndex ? 'active' : ''}`;
+                dot.addEventListener('click', () => {
+                    currentIndex = index;
+                    renderCarousel();
+                });
+                indicators.appendChild(dot);
+            });
+
+            // Automated Play/Pause Workflow for Desktop, Tablet, and Mobile
+            const cards = container.querySelectorAll('.carousel-card');
+            cards.forEach(card => {
+                const vid = card.querySelector('video');
+                if (vid) {
+                    if (card.classList.contains('card-center')) {
+                        vid.play().catch(error => {
+                            console.log("Autoplay restricted:", error);
+                        });
+                    } else {
+                        vid.pause();
+                        vid.currentTime = 0; // Resets video back to start when rotated out of view
+                    }
+                }
+            });
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % currentCategoryVideos.length;
+            renderCarousel();
+        }
+
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + currentCategoryVideos.length) % currentCategoryVideos.length;
+            renderCarousel();
+        }
+
+        document.getElementById('nextBtn').addEventListener('click', nextSlide);
+        document.getElementById('prevBtn').addEventListener('click', prevSlide);
+
+        // Touch & Mouse Swipe / Flick Support on Main Card Stage
+        let touchStartX = 0;
+        const stage = document.getElementById('carouselContainer');
+        
+        stage.addEventListener('touchstart', e => { 
+            touchStartX = e.changedTouches[0].screenX; 
+        });
+        
+        stage.addEventListener('touchend', e => {
+            let touchEndX = e.changedTouches[0].screenX;
+            // Swipe right to left -> next video
+            if (touchStartX - touchEndX > 40) {
+                nextSlide();
+            }
+            // Swipe left to right -> previous video
+            if (touchEndX - touchStartX > 40) {
+                prevSlide();
+            }
+        });
+
+        // Filter logic with category isolation
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const category = btn.getAttribute('data-filter');
+                
+                if (category === 'All') {
+                    currentCategoryVideos = [...videoData];
+                } else {
+                    currentCategoryVideos = videoData.filter(v => v.category === category);
+                }
+                currentIndex = 0;
+                renderCarousel();
+            });
+        });
+
+        // Initial render
+        renderCarousel();
+
+        // Modal Pop-up Functionality
+        const modal = document.getElementById('bioModal');
+        const modalBtn = document.getElementById('profileModalBtn');
+        const closeModal = document.getElementById('closeModal');
+
+        modalBtn.addEventListener('click', () => { modal.style.display = 'flex'; });
+        closeModal.addEventListener('click', () => { modal.style.display = 'none'; });
+        window.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
+    </script>
+</body>
+</html>
