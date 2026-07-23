@@ -49,6 +49,7 @@
                 <button class="filter-btn" data-filter="Podcast Highlights">Podcast Highlights</button>
                 <button class="filter-btn" data-filter="Real Estate">Real Estate</button>
                 <button class="filter-btn" data-filter="Hospitality Showcase">Hospitality Showcase</button>
+                <button class="filter-btn" data-filter="After Dark">After Dark</button>
             </div>
 
             <!-- 3D Spiral Carousel Stage -->
@@ -149,7 +150,7 @@
             {
                 "title": "Hackathon",
                 "category": "Event Recaps",
-                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784721797/fashion_2_icrhx4.mp4"
+                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784785852/real_estate_a51uvv.mp4"
             },
             {
                 "title": "Doctor",
@@ -170,6 +171,11 @@
                 "title": "Resort",
                 "category": "Hospitality Showcase",
                 "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784723336/fashion_4_o5fv8f.mp4"
+            },
+            {
+                "title": "Club Velocity",
+                "category": "After Dark",
+                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784785855/real_estate_1_zha2kf.mp4"
             }
         ];
 
@@ -183,7 +189,7 @@
             indicators.innerHTML = '';
 
             if (currentCategoryVideos.length === 0) {
-                container.innerHTML = `<div style="display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#888;">No reels found in this category.</div>`;
+                container.innerHTML = `<div style="display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#888;">No videos found in this category.</div>`;
                 return;
             }
 
