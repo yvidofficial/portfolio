@@ -94,7 +94,7 @@
         /* Hero Section */
         .hero-section {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .hero-section h1 {
@@ -109,6 +109,27 @@
             color: #777777;
             font-size: 15px;
             font-weight: 400;
+        }
+
+        /* Selected Works Header Pill (Placed Above Reels) */
+        .selected-works-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .selected-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 8px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #FFFFFF;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
         }
 
         /* 3D Carousel Stage */
@@ -179,7 +200,7 @@
             pointer-events: none;
         }
 
-        /* Video Wrapper & Rotation Feature Styles */
+        /* Video Wrapper & Click-to-Show Controls Overlay */
         .video-wrapper {
             position: relative;
             width: 100%;
@@ -197,6 +218,7 @@
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
+        /* Rotate Button (Always visible on top-right) */
         .rotate-btn {
             position: absolute;
             top: 16px;
@@ -222,6 +244,62 @@
             transform: scale(1.08);
         }
 
+        /* Video Controls Overlay (Hidden by default, shown on click) */
+        .video-controls-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 20;
+        }
+
+        .carousel-card.show-controls .video-controls-overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .ctrl-action-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #FFFFFF;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .ctrl-action-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .ctrl-main-btn {
+            width: 56px;
+            height: 56px;
+            background: #FFFFFF;
+            color: #121212;
+            border: none;
+            font-size: 18px;
+        }
+
+        .ctrl-main-btn:hover {
+            background: #E0E0E0;
+            transform: scale(1.1);
+        }
+
         .reel-overlay-info {
             position: absolute;
             bottom: 0;
@@ -231,6 +309,7 @@
             background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.4), transparent);
             color: #FFFFFF;
             pointer-events: none;
+            z-index: 15;
         }
 
         .reel-category {
@@ -330,7 +409,7 @@
             border-radius: 4px;
         }
 
-        /* Frosted-Glass Category Control Deck */
+        /* Frosted-Glass Subcategories Deck (Placed Below Reels) */
         .glass-filter-deck-wrapper {
             max-width: 900px;
             margin: 35px auto 0 auto;
@@ -606,6 +685,11 @@
                 <p class="scroll-hint">Scroll down to see my work!</p>
             </div>
 
+            <!-- Selected Works Header (Placed Above Reels) -->
+            <div class="selected-works-header" id="selectedWorksHeader">
+                <span class="selected-badge">Selected Works</span>
+            </div>
+
             <!-- 3D Spiral Carousel Stage -->
             <div class="carousel-stage-wrapper">
                 <button class="carousel-nav-btn prev-btn desktop-only" id="prevBtn">&#10094;</button>
@@ -624,7 +708,7 @@
                 <button class="mobile-nav-btn" id="mobNextBtn">Next &#10095;</button>
             </div>
 
-            <!-- Frosted-Glass Category Control Deck -->
+            <!-- Frosted-Glass Subcategories Deck (Placed Below Reels) -->
             <div class="glass-filter-deck-wrapper">
                 <div class="glass-filter-deck">
                     <button class="filter-btn active" data-filter="Selected Works">Selected Works</button>
@@ -718,7 +802,7 @@
             });
         });
 
-        // Master Video Database mapped with exact requested 4 clips and updated Realtor category
+        // Master Video Database with updated Cloudinary link for MG Cyberster
         const videoData = [
             {
                 "title": "MG Cyberster",
@@ -793,14 +877,19 @@
                 card.classList.add(positionClass);
 
                 card.innerHTML = `
-                    <div class="video-wrapper" style="width:100%; height:100%;">
-                        <video muted playsinline loop class="rotatable-video" style="width:100%; height:100%; object-fit:contain; background-color:#000000;">
+                    <div class="video-wrapper">
+                        <video muted playsinline loop class="rotatable-video">
                             <source src="${video.src}" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                         <button class="rotate-btn" aria-label="Rotate video" title="Rotate Clip">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.73-5.73"/></svg>
                         </button>
+                        <div class="video-controls-overlay">
+                            <button class="ctrl-action-btn rewind-btn" title="Back 10s">-10s</button>
+                            <button class="ctrl-action-btn ctrl-main-btn play-pause-btn" title="Play/Pause">❚❚</button>
+                            <button class="ctrl-action-btn forward-btn" title="Forward 10s">+10s</button>
+                        </div>
                     </div>
                     <div class="reel-overlay-info">
                         <span class="reel-category">${video.category}</span>
@@ -810,12 +899,16 @@
 
                 const rotateBtn = card.querySelector('.rotate-btn');
                 const vid = card.querySelector('video');
+                const videoWrapper = card.querySelector('.video-wrapper');
+                const playPauseBtn = card.querySelector('.play-pause-btn');
+                const rewindBtn = card.querySelector('.rewind-btn');
+                const forwardBtn = card.querySelector('.forward-btn');
                 let rotationAngle = 0;
 
+                // Rotate button logic
                 rotateBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     rotationAngle = (rotationAngle + 90) % 360;
-                    
                     if (rotationAngle === 90 || rotationAngle === 270) {
                         vid.style.transform = `rotate(${rotationAngle}deg) scale(0.5625)`;
                     } else {
@@ -823,22 +916,39 @@
                     }
                 });
 
-                vid.addEventListener('click', () => {
+                // Toggle controls overlay on video wrapper click (Center card only)
+                videoWrapper.addEventListener('click', (e) => {
                     if (card.classList.contains('card-center')) {
-                        if (vid.paused) {
-                            vid.play();
-                        } else {
-                            vid.pause();
-                        }
-                    }
-                });
-
-                card.addEventListener('click', () => {
-                    if (positionClass === 'card-left') {
+                        card.classList.toggle('show-controls');
+                    } else if (positionClass === 'card-left') {
                         prevSlide();
                     } else if (positionClass === 'card-right') {
                         nextSlide();
                     }
+                });
+
+                // Play / Pause button
+                playPauseBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (vid.paused) {
+                        vid.play();
+                        playPauseBtn.textContent = '❚❚';
+                    } else {
+                        vid.pause();
+                        playPauseBtn.textContent = '▶';
+                    }
+                });
+
+                // Rewind 10 seconds
+                rewindBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    vid.currentTime = Math.max(0, vid.currentTime - 10);
+                });
+
+                // Forward 10 seconds
+                forwardBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    vid.currentTime = Math.min(vid.duration, vid.currentTime + 10);
                 });
 
                 container.appendChild(card);
@@ -852,17 +962,22 @@
                 indicators.appendChild(dot);
             });
 
+            // Automated Play/Pause for center card
             const cards = container.querySelectorAll('.carousel-card');
             cards.forEach(card => {
                 const vid = card.querySelector('video');
+                const playPauseBtn = card.querySelector('.play-pause-btn');
                 if (vid) {
                     if (card.classList.contains('card-center')) {
-                        vid.play().catch(error => {
+                        vid.play().then(() => {
+                            if(playPauseBtn) playPauseBtn.textContent = '❚❚';
+                        }).catch(error => {
                             console.log("Autoplay restricted:", error);
                         });
                     } else {
                         vid.pause();
                         vid.currentTime = 0;
+                        card.classList.remove('show-controls');
                     }
                 }
             });
@@ -883,7 +998,10 @@
         document.getElementById('mobNextBtn').addEventListener('click', nextSlide);
         document.getElementById('mobPrevBtn').addEventListener('click', prevSlide);
 
+        // Filter logic & Selected Works Header toggle
         const filterBtns = document.querySelectorAll('.filter-btn');
+        const selectedWorksHeader = document.getElementById('selectedWorksHeader');
+
         filterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 filterBtns.forEach(b => b.classList.remove('active'));
@@ -892,8 +1010,10 @@
                 
                 if (category === 'Selected Works') {
                     currentCategoryVideos = videoData.filter(v => v.isSelected);
+                    selectedWorksHeader.style.display = 'block';
                 } else {
                     currentCategoryVideos = videoData.filter(v => v.category === category);
+                    selectedWorksHeader.style.display = 'none';
                 }
                 currentIndex = 0;
                 renderCarousel();
