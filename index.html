@@ -219,7 +219,7 @@
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Top-Left Enlarge (Expand) Button */
+        /* Permanent Top Action Buttons */
         .expand-btn {
             position: absolute;
             top: 16px;
@@ -245,11 +245,16 @@
             transform: scale(1.08);
         }
 
-        /* Top-Right Rotate Button */
-        .rotate-btn {
+        .top-right-controls {
             position: absolute;
             top: 16px;
             right: 16px;
+            display: flex;
+            gap: 8px;
+            z-index: 25;
+        }
+
+        .top-action-btn {
             background: rgba(0, 0, 0, 0.65);
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -262,16 +267,15 @@
             align-items: center;
             justify-content: center;
             transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
-            z-index: 25;
         }
 
-        .rotate-btn:hover {
+        .top-action-btn:hover {
             background: rgba(0, 0, 0, 0.85);
             border-color: rgba(255, 255, 255, 0.4);
             transform: scale(1.08);
         }
 
-        /* Video Controls Overlay (No Blur, Transparent background) */
+        /* Liquid Glass Video Controls Overlay */
         .video-controls-overlay {
             position: absolute;
             inset: 0;
@@ -279,7 +283,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 20px;
+            gap: 16px;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s ease;
@@ -292,8 +296,10 @@
         }
 
         .ctrl-action-btn {
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.35);
             color: #FFFFFF;
             width: 44px;
             height: 44px;
@@ -302,27 +308,31 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
-            transition: background 0.2s, transform 0.2s;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+            transition: background 0.2s, transform 0.2s, border-color 0.2s;
         }
 
         .ctrl-action-btn:hover {
             background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.6);
             transform: scale(1.1);
         }
 
         .ctrl-main-btn {
             width: 56px;
             height: 56px;
-            background: #FFFFFF;
-            color: #121212;
-            border: none;
-            font-size: 18px;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #FFFFFF;
+            font-size: 16px;
         }
 
         .ctrl-main-btn:hover {
-            background: #E0E0E0;
+            background: rgba(255, 255, 255, 0.4);
             transform: scale(1.1);
         }
 
@@ -357,7 +367,7 @@
             line-height: 1.3;
         }
 
-        /* Navigation Arrows (Side Gutters - Fully Clear of Video) */
+        /* Navigation Arrows (Side Gutters) */
         .carousel-nav-btn {
             background: rgba(20, 20, 20, 0.85);
             border: 1px solid rgba(255, 255, 255, 0.25);
@@ -418,13 +428,14 @@
             border-radius: 4px;
         }
 
-        /* Individual Transparent Category Buttons Deck */
+        /* Category Filter Deck Fixed Layout */
         .glass-filter-deck-wrapper {
             max-width: 950px;
             margin: 35px auto 0 auto;
             padding: 0 20px;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
         }
 
         .glass-filter-deck-wrapper::-webkit-scrollbar {
@@ -433,11 +444,12 @@
 
         .glass-filter-deck {
             display: flex;
-            justify-content: flex-start;
+            justify-content: center;
             align-items: center;
             gap: 12px;
-            white-space: nowrap;
-            padding: 6px 0;
+            padding: 6px 10px;
+            min-width: max-content;
+            margin: 0 auto;
         }
 
         .filter-btn {
@@ -451,6 +463,7 @@
             padding: 10px 18px;
             border-radius: 12px;
             transition: all 0.25s ease;
+            flex-shrink: 0;
         }
 
         .filter-btn:hover {
@@ -662,6 +675,9 @@
         @media (max-width: 768px) {
             .scroll-categories-hint {
                 display: block;
+            }
+            .glass-filter-deck {
+                justify-content: flex-start;
             }
             .carousel-stage-wrapper {
                 max-width: 100%;
@@ -923,16 +939,26 @@
 
                 card.innerHTML = `
                     <div class="video-wrapper">
-                        <video muted playsinline loop preload="auto" class="rotatable-video">
+                        <!-- Audio enabled by default (muted removed) -->
+                        <video playsinline loop preload="auto" class="rotatable-video">
                             <source src="${video.src}" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
+                        
+                        <!-- Permanent Top Action Buttons -->
                         <button class="expand-btn" aria-label="Enlarge video" title="Enlarge View">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
                         </button>
-                        <button class="rotate-btn" aria-label="Rotate video" title="Rotate Clip">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.73-5.73"/></svg>
-                        </button>
+                        <div class="top-right-controls">
+                            <button class="top-action-btn sound-toggle-btn" aria-label="Toggle Sound" title="Mute/Unmute">
+                                <svg class="sound-icon-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                            </button>
+                            <button class="top-action-btn rotate-btn" aria-label="Rotate video" title="Rotate Clip">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.73-5.73"/></svg>
+                            </button>
+                        </div>
+
+                        <!-- Liquid Glass Center Controls Overlay -->
                         <div class="video-controls-overlay">
                             <button class="ctrl-action-btn rewind-btn" title="Back 10s">-10s</button>
                             <button class="ctrl-action-btn ctrl-main-btn play-pause-btn" title="Play/Pause">❚❚</button>
@@ -947,6 +973,8 @@
 
                 const expandBtn = card.querySelector('.expand-btn');
                 const rotateBtn = card.querySelector('.rotate-btn');
+                const soundToggleBtn = card.querySelector('.sound-toggle-btn');
+                const soundIcon = card.querySelector('.sound-icon-on');
                 const vid = card.querySelector('video');
                 const videoWrapper = card.querySelector('.video-wrapper');
                 const playPauseBtn = card.querySelector('.play-pause-btn');
@@ -976,24 +1004,40 @@
                     }
                 });
 
-                // Toggle controls overlay on wrapper click with 0.5s auto-hide timer
+                // Mute / Unmute audio toggle in top right corner
+                soundToggleBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    vid.muted = !vid.muted;
+                    if (vid.muted) {
+                        soundToggleBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`;
+                    } else {
+                        soundToggleBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`;
+                    }
+                });
+
+                // Tap video background to toggle Play/Pause and show liquid glass controls with 0.5s auto-hide
                 videoWrapper.addEventListener('click', (e) => {
                     if (card.classList.contains('card-center')) {
-                        // Clear any active timer so it resets smoothly on rapid taps
+                        // Toggle play/pause state directly
+                        if (vid.paused) {
+                            vid.play();
+                            playPauseBtn.textContent = '❚❚';
+                        } else {
+                            vid.pause();
+                            playPauseBtn.textContent = '▶';
+                        }
+
+                        // Show liquid glass controls & set 0.5s timer
                         if (hideControlsTimeout) {
                             clearTimeout(hideControlsTimeout);
                             hideControlsTimeout = null;
                         }
 
-                        if (card.classList.contains('show-controls')) {
+                        card.classList.add('show-controls');
+                        hideControlsTimeout = setTimeout(() => {
                             card.classList.remove('show-controls');
-                        } else {
-                            card.classList.add('show-controls');
-                            // Auto hide after 500ms (half a second)
-                            hideControlsTimeout = setTimeout(() => {
-                                card.classList.remove('show-controls');
-                            }, 500);
-                        }
+                        }, 500);
+
                     } else if (positionClass === 'card-left') {
                         prevSlide();
                     } else if (positionClass === 'card-right') {
@@ -1001,7 +1045,7 @@
                     }
                 });
 
-                // Play / Pause button
+                // Play / Pause button explicitly
                 playPauseBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     if (vid.paused) {
@@ -1046,7 +1090,13 @@
                         vid.play().then(() => {
                             if(playPauseBtn) playPauseBtn.textContent = '❚❚';
                         }).catch(error => {
-                            console.log("Autoplay restricted by browser:", error);
+                            console.log("Autoplay with audio restricted by browser, muted fallback applied:", error);
+                            vid.muted = true;
+                            vid.play();
+                            const soundBtn = card.querySelector('.sound-toggle-btn');
+                            if(soundBtn) {
+                                soundBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`;
+                            }
                         });
                     } else {
                         vid.pause();
