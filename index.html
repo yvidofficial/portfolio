@@ -281,14 +281,941 @@
             inset: 0;
             background: transparent;
             display: flex;
-            flex-direction: column; /* Changed to column for stacking */
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 16px;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s ease;
             z-index: 20;
         }
 
-        .carousel-card.show-controls .
+        .carousel-card.show-controls .video-controls-overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .ctrl-action-btn {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            color: #FFFFFF;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+            transition: background 0.2s, transform 0.2s, border-color 0.2s;
+        }
+
+        .ctrl-action-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.6);
+            transform: scale(1.1);
+        }
+
+        .ctrl-main-btn {
+            width: 56px;
+            height: 56px;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #FFFFFF;
+            font-size: 16px;
+        }
+
+        .ctrl-main-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.1);
+        }
+
+        .reel-overlay-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 25px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.4), transparent);
+            color: #FFFFFF;
+            pointer-events: none;
+            z-index: 15;
+        }
+
+        .badge-row {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+            pointer-events: auto;
+        }
+
+        .reel-category {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(6px);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        /* Interactive Category Transformation Button */
+        .transformation-trigger-btn {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #FFFFFF;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            pointer-events: auto;
+            z-index: 25;
+        }
+
+        .transformation-trigger-btn:hover {
+            background: #FFFFFF;
+            color: #121212;
+            transform: translateY(-1px);
+        }
+
+        .reel-title {
+            font-size: 17px;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        /* Navigation Arrows (Side Gutters) */
+        .carousel-nav-btn {
+            background: rgba(20, 20, 20, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #FFFFFF;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 30;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(6px);
+            transition: all 0.3s ease;
+        }
+
+        .carousel-nav-btn:hover {
+            background: #FFFFFF;
+            color: #121212;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .prev-btn { left: 12px; }
+        .next-btn { right: 12px; }
+
+        /* Carousel Indicators Bar */
+        .carousel-controls-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .indicator-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator-dot.active {
+            background: #FFFFFF;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        /* Fixed Category Filter Deck */
+        .glass-filter-deck-wrapper {
+            max-width: 950px;
+            margin: 35px auto 0 auto;
+            padding: 0 20px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+        }
+
+        .glass-filter-deck-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .glass-filter-deck {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 12px;
+            padding: 6px 0;
+            min-width: max-content;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 500;
+            color: #AAAAAA;
+            cursor: pointer;
+            padding: 10px 18px;
+            border-radius: 12px;
+            transition: all 0.25s ease;
+            flex-shrink: 0;
+        }
+
+        .filter-btn:hover {
+            color: #FFFFFF;
+            background: #FFFFFF;
+            border-color: #FFFFFF;
+        }
+
+        .filter-btn.active {
+            color: #121212;
+            background: #FFFFFF;
+            border-color: #FFFFFF;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.25);
+        }
+
+        .scroll-categories-hint {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 11px;
+            color: #777777;
+            letter-spacing: 0.5px;
+            display: none;
+        }
+
+        /* Contact Page Styles */
+        .contact-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .contact-header h2 {
+            font-size: 26px;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+
+        .contact-container {
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #AAAAAA;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+            color: #FFFFFF;
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .submit-btn {
+            background-color: #FFFFFF;
+            color: #121212;
+            border: none;
+            padding: 14px 30px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.2s;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        /* Modal Popups Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #1A1A1A;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 380px;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            color: #E0E0E0;
+        }
+
+        .video-modal-content {
+            background: #000;
+            padding: 0;
+            width: 90%;
+            max-width: 440px;
+            height: 80vh;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .video-modal-content video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .modal-top-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            z-index: 30;
+        }
+
+        .modal-top-sound {
+            position: absolute;
+            top: 68px;
+            right: 16px;
+            z-index: 30;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #888;
+            z-index: 10;
+        }
+
+        .close-btn:hover {
+            color: #FFF;
+        }
+
+        .modal-header-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 15px;
+        }
+
+        .modal-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .modal-header-info h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+
+        .modal-details p {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #CCCCCC;
+        }
+
+        .modal-details a {
+            color: #FFFFFF;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+
+        .bio-box {
+            margin-top: 15px;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #AAAAAA;
+        }
+
+        /* Footer */
+        .site-footer {
+            text-align: center;
+            padding: 35px;
+            font-size: 13px;
+            color: #666666;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Mobile Responsive Adjustments */
+        @media (max-width: 768px) {
+            .scroll-categories-hint {
+                display: block;
+            }
+            .carousel-stage-wrapper {
+                max-width: 100%;
+                height: 460px;
+            }
+            .carousel-nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 14px;
+            }
+            .prev-btn { left: 8px; }
+            .next-btn { right: 8px; }
+            .carousel-card {
+                width: 260px;
+                height: 420px;
+            }
+            .carousel-card.card-left {
+                transform: translateX(-95px) scale(0.72) rotateY(15deg);
+            }
+            .carousel-card.card-right {
+                transform: translateX(95px) scale(0.72) rotateY(-15deg);
+            }
+            .site-header {
+                padding: 15px 20px;
+            }
+            .hero-section h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navigation -->
+    <header class="site-header">
+        <nav class="nav-container">
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link active" data-target="work-page">WORK</a></li>
+                <li><a href="#" class="nav-link" id="aboutNavBtn">ABOUT</a></li>
+                <li><a href="#" class="nav-link" data-target="contact-page">CONTACT</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+
+        <!-- WORK PAGE -->
+        <section id="work-page" class="page active-page">
+            <div class="hero-section">
+                <!-- Centered Logo Avatar -->
+                <div class="centered-logo-container">
+                    <img src="avatar.jpg" alt="Divy Garg Logo" class="profile-logo-center" id="profileModalBtn" title="Click for Bio & Info">
+                </div>
+                <h1>Hi, I'm Divy Garg!</h1>
+                <p class="scroll-hint">Scroll down to see my work!</p>
+            </div>
+
+            <!-- Selected Works Header -->
+            <div class="selected-works-header" id="selectedWorksHeader">
+                <span class="selected-badge">Selected Works</span>
+            </div>
+
+            <!-- 3D Spiral Carousel Stage -->
+            <div class="carousel-stage-wrapper">
+                <button class="carousel-nav-btn prev-btn" id="prevBtn">&#10094;</button>
+                
+                <div class="carousel-container" id="carouselContainer">
+                    <!-- Carousel cards injected dynamically -->
+                </div>
+
+                <button class="carousel-nav-btn next-btn" id="nextBtn">&#10095;</button>
+            </div>
+
+            <!-- Carousel Indicators Bar -->
+            <div class="carousel-controls-bar">
+                <div class="carousel-indicators" id="carouselIndicators"></div>
+            </div>
+
+            <!-- Individual Transparent Category Buttons Deck -->
+            <div class="glass-filter-deck-wrapper">
+                <div class="glass-filter-deck" id="filterDeck">
+                    <button class="filter-btn active" data-filter="Selected Works">Selected Works</button>
+                    <button class="filter-btn" data-filter="All">All</button>
+                    <button class="filter-btn" data-filter="Automotive">Automotive</button>
+                    <button class="filter-btn" data-filter="Events">Events</button>
+                    <button class="filter-btn" data-filter="Podcast">Podcast</button>
+                    <button class="filter-btn" data-filter="Realtor">Realtor</button>
+                    <button class="filter-btn" data-filter="Hospitality">Hospitality</button>
+                    <button class="filter-btn" data-filter="Nightlife">Nightlife</button>
+                </div>
+            </div>
+            <!-- Swipe hint text placed outside the scrolling container so it stays fixed/centered -->
+            <div class="scroll-categories-hint">
+                <span>← Swipe categories to explore more →</span>
+            </div>
+        </section>
+
+        <!-- CONTACT PAGE -->
+        <section id="contact-page" class="page">
+            <div class="contact-header">
+                <h2>CONTACT</h2>
+            </div>
+
+            <div class="contact-container">
+                <form class="contact-form" action="https://formspree.io/f/xzdnabey" method="POST">
+                    <div class="form-group">
+                        <label for="name">Name *</label>
+                        <input type="text" id="name" name="name" placeholder="Your Name..." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" placeholder="Your Email Address..." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Message *</label>
+                        <textarea id="message" name="message" rows="5" placeholder="Your Message..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Submit</button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Profile Info Modal Popup -->
+    <div id="bioModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModal">&times;</span>
+            <div class="modal-header-info">
+                <img src="avatar.jpg" alt="Divy Garg" class="modal-avatar">
+                <h2>Divy Garg</h2>
+            </div>
+            <div class="modal-details">
+                <p><strong>Age:</strong> 20</p>
+                <p><strong>Location:</strong> 🇮🇳 Delhi, India</p>
+                <p><strong>Phone:</strong> <a href="tel:+919306101719">+91 9306101719</a></p>
+                <p><strong>Instagram:</strong> <a href="https://instagram.com/yvid_official" target="_blank">@yvid_official</a></p>
+                <div class="bio-box">
+                    <p><strong>Bio:</strong> Video editor & creator specializing in cinematic event recaps, podcast highlights, real estate showcases, and social shorts.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Enlarge Fullscreen Modal -->
+    <div id="videoModal" class="modal">
+        <div class="video-modal-content">
+            <button class="top-action-btn modal-top-close" id="closeVideoModal" aria-label="Close video" title="Close">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <button class="top-action-btn modal-top-sound modal-sound-toggle-btn" aria-label="Toggle Sound" title="Mute/Unmute">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+            </button>
+
+            <video id="enlargedVideo" playsinline loop autoplay></video>
+
+            <div class="video-controls-overlay modal-video-controls show-controls">
+                <button class="ctrl-action-btn modal-rewind" title="Back 10s">-10s</button>
+                <button class="ctrl-action-btn ctrl-main-btn modal-play-pause" title="Play/Pause">❚❚</button>
+                <button class="ctrl-action-btn modal-forward" title="Forward 10s">+10s</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p>Created by Divy Garg</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Page Navigation Switcher
+        const navLinks = document.querySelectorAll('.nav-link');
+        const pages = document.querySelectorAll('.page');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('data-target');
+                if (!targetId) return;
+
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+
+                pages.forEach(page => {
+                    page.classList.remove('active-page');
+                    if (page.id === targetId) {
+                        page.classList.add('active-page');
+                    }
+                });
+                window.scrollTo(0, 0);
+            });
+        });
+
+        // Master Video Database
+        const videoData = [
+            {
+                "title": "Club Velocity",
+                "category": "Nightlife",
+                "isSelected": true,
+                "hasTransformation": true,
+                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784785855/real_estate_1_zha2kf.mp4",
+                "transformSrc": "https://res.cloudinary.com/kvee22j1/video/upload/v1784903665/Sequence_03_2_wvmrqe.mp4" 
+            },
+            {
+                "title": "MG Cyberster",
+                "category": "Automotive",
+                "isSelected": true,
+                "hasTransformation": true,
+                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784891306/porti_cazavu.mp4",
+                "transformSrc": "https://res.cloudinary.com/kvee22j1/video/upload/v1784901878/car_post_bvzu2k.mp4"
+            },
+            {
+                "title": "Doctor Podcast",
+                "category": "Podcast",
+                "isSelected": true,
+                "hasTransformation": true,
+                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784723320/fashion_5_zrq5sn.mp4",
+                "transformSrc": "https://res.cloudinary.com/kvee22j1/video/upload/v1784901871/freelance-video-editor-doctor-podcast-clinic-reels_rpgx7a.mp4"
+            },
+            {
+                "title": "Indian Realtor",
+                "category": "Realtor",
+                "isSelected": true,
+                "hasTransformation": true,
+                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784722074/fashion_1_ty2szd.mp4",
+                "transformSrc": "https://res.cloudinary.com/kvee22j1/video/upload/v1784903565/Sequence_03_1_frgbub.mp4"
+            },
+            {
+                "title": "Hackathon",
+                "category": "Events",
+                "isSelected": false,
+                "hasTransformation": false,
+                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784785852/real_estate_a51uvv.mp4"
+            },
+            {
+                "title": "Canadian Realtor",
+                "category": "Realtor",
+                "isSelected": false,
+                "hasTransformation": true,
+                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784722499/fashion_3_uvpnqs.mp4",
+                "transformSrc": "https://res.cloudinary.com/kvee22j1/video/upload/v1784722074/fashion_1_ty2szd.mp4"
+            },
+            {
+                "title": "Resort Showcase",
+                "category": "Hospitality",
+                "isSelected": false,
+                "hasTransformation": false,
+                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784723336/fashion_4_o5fv8f.mp4"
+            }
+        ];
+
+        let currentCategoryVideos = videoData.filter(v => v.isSelected);
+        let currentIndex = 0;
+        let currentFilter = 'Selected Works';
+
+        function renderCarousel() {
+            const container = document.getElementById('carouselContainer');
+            const indicators = document.getElementById('carouselIndicators');
+            container.innerHTML = '';
+            indicators.innerHTML = '';
+
+            if (currentCategoryVideos.length === 0) {
+                container.innerHTML = `<div style="display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#888;">No videos found in this category.</div>`;
+                return;
+            }
+
+            if (currentIndex >= currentCategoryVideos.length) {
+                currentIndex = 0;
+            }
+
+            const showCompareButton = video => video.hasTransformation && currentFilter !== 'Selected Works' && currentFilter !== 'All';
+
+            currentCategoryVideos.forEach((video, index) => {
+                const card = document.createElement('div');
+                card.className = 'carousel-card';
+
+                const total = currentCategoryVideos.length;
+                let diff = (index - currentIndex + total) % total;
+                if (diff > total / 2) diff -= total;
+
+                if (diff === 0) {
+                    card.classList.add('card-center', 'show-controls');
+                } else if (diff === 1 || (diff === -(total - 1))) {
+                    card.classList.add('card-right');
+                } else if (diff === -1 || diff === (total - 1)) {
+                    card.classList.add('card-left');
+                } else {
+                    card.classList.add('hide');
+                }
+
+                card.innerHTML = `
+                    <div class="video-wrapper">
+                        <button class="expand-btn" title="Enlarge Video">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                        </button>
+                        <div class="top-right-controls">
+                            <button class="top-action-btn sound-toggle-btn" title="Mute/Unmute">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                            </button>
+                        </div>
+                        <video class="rotatable-video" src="${video.src}" playsinline muted loop autoplay></video>
+                        <div class="video-controls-overlay">
+                            <button class="ctrl-action-btn rewind-btn" title="Back 10s">-10s</button>
+                            <button class="ctrl-action-btn ctrl-main-btn play-pause-btn" title="Play/Pause">❚❚</button>
+                            <button class="ctrl-action-btn forward-btn" title="Forward 10s">+10s</button>
+                        </div>
+                        <div class="reel-overlay-info">
+                            <div class="badge-row">
+                                <span class="reel-category">${video.category}</span>
+                                ${showCompareButton(video) ? `<button class="transformation-trigger-btn">✨ Compare</button>` : ''}
+                            </div>
+                            <div class="reel-title">${video.title}</div>
+                        </div>
+                    </div>
+                `;
+
+                card.addEventListener('click', (e) => {
+                    if (e.target.closest('button')) return;
+                    if (card.classList.contains('card-right')) {
+                        currentIndex = (currentIndex + 1) % currentCategoryVideos.length;
+                        renderCarousel();
+                    } else if (card.classList.contains('card-left')) {
+                        currentIndex = (currentIndex - 1 + currentCategoryVideos.length) % currentCategoryVideos.length;
+                        renderCarousel();
+                    }
+                });
+
+                if (diff === 0) {
+                    const vidElement = card.querySelector('video');
+                    const playPauseBtn = card.querySelector('.play-pause-btn');
+                    const soundBtn = card.querySelector('.sound-toggle-btn');
+                    const expandBtn = card.querySelector('.expand-btn');
+                    const rewindBtn = card.querySelector('.rewind-btn');
+                    const forwardBtn = card.querySelector('.forward-btn');
+                    const transformBtn = card.querySelector('.transformation-trigger-btn');
+
+                    playPauseBtn.addEventListener('click', () => {
+                        if (vidElement.paused) {
+                            vidElement.play();
+                            playPauseBtn.textContent = '❚❚';
+                        } else {
+                            vidElement.pause();
+                            playPauseBtn.textContent = '▶';
+                        }
+                    });
+
+                    soundBtn.addEventListener('click', () => {
+                        vidElement.muted = !vidElement.muted;
+                        soundBtn.style.opacity = vidElement.muted ? '0.6' : '1';
+                    });
+
+                    rewindBtn.addEventListener('click', () => {
+                        vidElement.currentTime = Math.max(0, vidElement.currentTime - 10);
+                    });
+
+                    forwardBtn.addEventListener('click', () => {
+                        vidElement.currentTime = Math.min(vidElement.duration, vidElement.currentTime + 10);
+                    });
+
+                    if (transformBtn && showCompareButton(video)) {
+                        let isTransformed = false;
+                        transformBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            isTransformed = !isTransformed;
+                            vidElement.src = isTransformed ? video.transformSrc : video.src;
+                            vidElement.load();
+                            vidElement.play();
+                            transformBtn.style.background = isTransformed ? '#FFFFFF' : '';
+                            transformBtn.style.color = isTransformed ? '#121212' : '';
+                        });
+                    }
+
+                    expandBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openVideoModal(vidElement.src);
+                    });
+                }
+
+                container.appendChild(card);
+            });
+
+            currentCategoryVideos.forEach((_, idx) => {
+                const dot = document.createElement('div');
+                dot.className = `indicator-dot ${idx === currentIndex ? 'active' : ''}`;
+                dot.addEventListener('click', () => {
+                    currentIndex = idx;
+                    renderCarousel();
+                });
+                indicators.appendChild(dot);
+            });
+        }
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if (currentCategoryVideos.length === 0) return;
+            currentIndex = (currentIndex + 1) % currentCategoryVideos.length;
+            renderCarousel();
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            if (currentCategoryVideos.length === 0) return;
+            currentIndex = (currentIndex - 1 + currentCategoryVideos.length) % currentCategoryVideos.length;
+            renderCarousel();
+        });
+
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                currentFilter = btn.getAttribute('data-filter');
+                if (currentFilter === 'Selected Works') {
+                    currentCategoryVideos = videoData.filter(v => v.isSelected);
+                } else if (currentFilter === 'All') {
+                    currentCategoryVideos = videoData;
+                } else {
+                    currentCategoryVideos = videoData.filter(v => v.category === currentFilter);
+                }
+
+                currentIndex = 0;
+                renderCarousel();
+            });
+        });
+
+        const bioModal = document.getElementById('bioModal');
+        const videoModal = document.getElementById('videoModal');
+        const profileModalBtn = document.getElementById('profileModalBtn');
+        const aboutNavBtn = document.getElementById('aboutNavBtn');
+        const closeModal = document.getElementById('closeModal');
+        const closeVideoModal = document.getElementById('closeVideoModal');
+        const enlargedVideo = document.getElementById('enlargedVideo');
+
+        profileModalBtn.addEventListener('click', () => { bioModal.style.display = 'flex'; });
+        aboutNavBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            bioModal.style.display = 'flex';
+        });
+        closeModal.addEventListener('click', () => { bioModal.style.display = 'none'; });
+        closeVideoModal.addEventListener('click', () => {
+            videoModal.style.display = 'none';
+            enlargedVideo.pause();
+            enlargedVideo.src = '';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === bioModal) bioModal.style.display = 'none';
+            if (e.target === videoModal) {
+                videoModal.style.display = 'none';
+                enlargedVideo.pause();
+                enlargedVideo.src = '';
+            }
+        });
+
+        function openVideoModal(src) {
+            enlargedVideo.src = src;
+            enlargedVideo.load();
+            enlargedVideo.muted = false;
+            enlargedVideo.play();
+            videoModal.style.display = 'flex';
+        }
+
+        const modalPlayPause = videoModal.querySelector('.modal-play-pause');
+        const modalRewind = videoModal.querySelector('.modal-rewind');
+        const modalForward = videoModal.querySelector('.modal-forward');
+        const modalSoundToggle = videoModal.querySelector('.modal-sound-toggle-btn');
+
+        modalPlayPause.addEventListener('click', () => {
+            if (enlargedVideo.paused) {
+                enlargedVideo.play();
+                modalPlayPause.textContent = '❚❚';
+            } else {
+                enlargedVideo.pause();
+                modalPlayPause.textContent = '▶';
+            }
+        });
+
+        modalRewind.addEventListener('click', () => {
+            enlargedVideo.currentTime = Math.max(0, enlargedVideo.currentTime - 10);
+        });
+
+        modalForward.addEventListener('click', () => {
+            enlargedVideo.currentTime = Math.min(enlargedVideo.duration, enlargedVideo.currentTime + 10);
+        });
+
+        modalSoundToggle.addEventListener('click', () => {
+            enlargedVideo.muted = !enlargedVideo.muted;
+            modalSoundToggle.style.opacity = enlargedVideo.muted ? '0.6' : '1';
+        });
+
+        renderCarousel();
+    </script>
+</body>
+</html>
