@@ -4,8 +4,580 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Divy Garg — Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Reset & Base Styles - Dark Cinematic Mode */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #121212;
+            color: #E0E0E0;
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Header & Navbar */
+        .site-header {
+            padding: 20px 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: sticky;
+            top: 0;
+            background: #121212;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #888888;
+            font-weight: 500;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: color 0.2s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #FFFFFF;
+        }
+
+        /* Centered Logo Avatar */
+        .centered-logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-logo-center {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            cursor: pointer;
+            filter: drop-shadow(0 4px 20px rgba(78, 6, 124, 0.35));
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+
+        .profile-logo-center:hover {
+            transform: scale(1.04);
+            filter: drop-shadow(0 6px 30px rgba(78, 6, 124, 0.55));
+        }
+
+        /* Pages Control */
+        .page {
+            display: none;
+            min-height: calc(100vh - 140px);
+            padding: 30px 20px 50px 20px;
+        }
+
+        .page.active-page {
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .hero-section h1 {
+            font-size: 44px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #FFFFFF;
+            letter-spacing: -0.5px;
+        }
+
+        .scroll-hint {
+            color: #777777;
+            font-size: 15px;
+            font-weight: 400;
+        }
+
+        /* 3D Carousel Stage */
+        .carousel-stage-wrapper {
+            position: relative;
+            max-width: 1100px;
+            width: 100%;
+            height: 520px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1400px;
+        }
+
+        .carousel-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-card {
+            position: absolute;
+            width: 310px;
+            height: 490px;
+            border-radius: 18px;
+            background: #000000;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            backface-visibility: hidden;
+        }
+
+        /* 3D Positioning States */
+        .carousel-card.card-center {
+            transform: translateX(0) scale(1) rotateY(0deg);
+            opacity: 1;
+            z-index: 3;
+            pointer-events: auto;
+        }
+
+        .carousel-card.card-left {
+            transform: translateX(-260px) scale(0.82) rotateY(20deg);
+            opacity: 0.4;
+            z-index: 2;
+            cursor: pointer;
+        }
+
+        .carousel-card.card-right {
+            transform: translateX(260px) scale(0.82) rotateY(-20deg);
+            opacity: 0.4;
+            z-index: 2;
+            cursor: pointer;
+        }
+
+        .carousel-card.hide {
+            transform: translateX(0) scale(0.4);
+            opacity: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Video Wrapper & Rotation Feature Styles */
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .rotatable-video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background-color: #000000;
+            display: block;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .rotate-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #FFFFFF;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+            z-index: 25;
+        }
+
+        .rotate-btn:hover {
+            background: rgba(0, 0, 0, 0.85);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: scale(1.08);
+        }
+
+        .reel-overlay-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 25px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.4), transparent);
+            color: #FFFFFF;
+            pointer-events: none;
+        }
+
+        .reel-category {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(6px);
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .reel-title {
+            font-size: 17px;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        /* Desktop Navigation Arrows */
+        .carousel-nav-btn {
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #FFFFFF;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            z-index: 30;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(6px);
+            transition: all 0.3s ease;
+        }
+
+        .carousel-nav-btn:hover {
+            background: #FFFFFF;
+            color: #121212;
+            transform: translateY(-50%) scale(1.08);
+        }
+
+        .prev-btn { left: 40px; }
+        .next-btn { right: 40px; }
+
+        /* Carousel Controls Bar */
+        .carousel-controls-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .mobile-nav-btn {
+            display: none;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #FFFFFF;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .mobile-nav-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .indicator-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator-dot.active {
+            background: #FFFFFF;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        /* Frosted-Glass Category Control Deck */
+        .glass-filter-deck-wrapper {
+            max-width: 900px;
+            margin: 35px auto 0 auto;
+            padding: 0 20px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .glass-filter-deck-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .glass-filter-deck {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 14px 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            white-space: nowrap;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: none;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 500;
+            color: #888888;
+            cursor: pointer;
+            padding: 8px 14px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .filter-btn.active {
+            color: #121212;
+            background: #FFFFFF;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Contact Page Styles */
+        .contact-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .contact-header h2 {
+            font-size: 26px;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+
+        .contact-container {
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #AAAAAA;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+            color: #FFFFFF;
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #FFFFFF;
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .submit-btn {
+            background-color: #FFFFFF;
+            color: #121212;
+            border: none;
+            padding: 14px 30px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.2s;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        /* Modal Popup Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #1A1A1A;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 380px;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            color: #E0E0E0;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #888;
+        }
+
+        .close-btn:hover {
+            color: #FFF;
+        }
+
+        .modal-header-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 15px;
+        }
+
+        .modal-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .modal-header-info h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+
+        .modal-details p {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #CCCCCC;
+        }
+
+        .modal-details a {
+            color: #FFFFFF;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+
+        .bio-box {
+            margin-top: 15px;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #AAAAAA;
+        }
+
+        /* Footer */
+        .site-footer {
+            text-align: center;
+            padding: 35px;
+            font-size: 13px;
+            color: #666666;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Mobile Responsive Adjustments */
+        @media (max-width: 768px) {
+            .carousel-stage-wrapper {
+                max-width: 100%;
+                height: 460px;
+            }
+            .desktop-only {
+                display: none !important;
+            }
+            .mobile-nav-btn {
+                display: inline-block;
+            }
+            .carousel-card {
+                width: 260px;
+                height: 420px;
+            }
+            .carousel-card.card-left {
+                transform: translateX(-100px) scale(0.72) rotateY(15deg);
+            }
+            .carousel-card.card-right {
+                transform: translateX(100px) scale(0.72) rotateY(-15deg);
+            }
+            .site-header {
+                padding: 15px 20px;
+            }
+            .hero-section h1 {
+                font-size: 32px;
+            }
+            .glass-filter-deck {
+                justify-content: flex-start;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -52,14 +624,14 @@
                 <button class="mobile-nav-btn" id="mobNextBtn">Next &#10095;</button>
             </div>
 
-            <!-- Frosted-Glass Category Control Deck (Placed Below Reels) -->
+            <!-- Frosted-Glass Category Control Deck -->
             <div class="glass-filter-deck-wrapper">
                 <div class="glass-filter-deck">
                     <button class="filter-btn active" data-filter="Selected Works">Selected Works</button>
                     <button class="filter-btn" data-filter="Automotive">Automotive</button>
                     <button class="filter-btn" data-filter="Events">Events</button>
                     <button class="filter-btn" data-filter="Podcast">Podcast</button>
-                    <button class="filter-btn" data-filter="Realtor">Realty</button>
+                    <button class="filter-btn" data-filter="Realtor">Realtor</button>
                     <button class="filter-btn" data-filter="Hospitality">Hospitality</button>
                     <button class="filter-btn" data-filter="Nightlife">Nightlife</button>
                 </div>
@@ -146,167 +718,13 @@
             });
         });
 
-        // Master Video Database mapped with short category tags
+        // Master Video Database mapped with exact requested 4 clips and updated Realtor category
         const videoData = [
             {
                 "title": "MG Cyberster",
                 "category": "Automotive",
                 "isSelected": true,
-                "src": "<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Divy Garg — Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-</head>
-<body>
-
-    <!-- Header / Navigation -->
-    <header class="site-header">
-        <nav class="nav-container">
-            <ul class="nav-links">
-                <li><a href="#" class="nav-link active" data-target="work-page">WORK</a></li>
-                <li><a href="#" class="nav-link" id="aboutNavBtn">ABOUT</a></li>
-                <li><a href="#" class="nav-link" data-target="contact-page">CONTACT</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- Main Content Area -->
-    <main class="main-content">
-
-        <!-- WORK PAGE -->
-        <section id="work-page" class="page active-page">
-            <div class="hero-section">
-                <!-- Centered Logo Avatar -->
-                <div class="centered-logo-container">
-                    <img src="avatar.jpg" alt="Divy Garg Logo" class="profile-logo-center" id="profileModalBtn" title="Click for Bio & Info">
-                </div>
-                <h1>Hi, I'm Divy Garg!</h1>
-                <p class="scroll-hint">Scroll down to see my work!</p>
-            </div>
-
-            <!-- 3D Spiral Carousel Stage -->
-            <div class="carousel-stage-wrapper">
-                <button class="carousel-nav-btn prev-btn desktop-only" id="prevBtn">&#10094;</button>
-                
-                <div class="carousel-container" id="carouselContainer">
-                    <!-- Carousel cards injected dynamically -->
-                </div>
-
-                <button class="carousel-nav-btn next-btn desktop-only" id="nextBtn">&#10095;</button>
-            </div>
-
-            <!-- Carousel Controls Bar (Indicators + Mobile Navigation Buttons) -->
-            <div class="carousel-controls-bar">
-                <button class="mobile-nav-btn" id="mobPrevBtn">&#10094; Prev</button>
-                <div class="carousel-indicators" id="carouselIndicators"></div>
-                <button class="mobile-nav-btn" id="mobNextBtn">Next &#10095;</button>
-            </div>
-
-            <!-- Frosted-Glass Category Control Deck (Placed Below Reels) -->
-            <div class="glass-filter-deck-wrapper">
-                <div class="glass-filter-deck">
-                    <button class="filter-btn active" data-filter="Selected Works">Selected Works</button>
-                    <button class="filter-btn" data-filter="Automotive">Automotive</button>
-                    <button class="filter-btn" data-filter="Events">Events</button>
-                    <button class="filter-btn" data-filter="Podcast">Podcast</button>
-                    <button class="filter-btn" data-filter="Realtor">Realty</button>
-                    <button class="filter-btn" data-filter="Hospitality">Hospitality</button>
-                    <button class="filter-btn" data-filter="Nightlife">Nightlife</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- CONTACT PAGE -->
-        <section id="contact-page" class="page">
-            <div class="contact-header">
-                <h2>CONTACT</h2>
-            </div>
-
-            <div class="contact-container">
-                <form class="contact-form" action="https://formspree.io/f/xzdnabey" method="POST">
-                    <div class="form-group">
-                        <label for="name">Name *</label>
-                        <input type="text" id="name" name="name" placeholder="Your Name..." required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">Email Address *</label>
-                        <input type="email" id="email" name="email" placeholder="Your Email Address..." required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="message">Message *</label>
-                        <textarea id="message" name="message" rows="5" placeholder="Your Message..." required></textarea>
-                    </div>
-
-                    <button type="submit" class="submit-btn">Submit</button>
-                </form>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Profile Info Modal Popup -->
-    <div id="bioModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" id="closeModal">&times;</span>
-            <div class="modal-header-info">
-                <img src="avatar.jpg" alt="Divy Garg" class="modal-avatar">
-                <h2>Divy Garg</h2>
-            </div>
-            <div class="modal-details">
-                <p><strong>Age:</strong> 20</p>
-                <p><strong>Location:</strong> 🇮🇳 Delhi, India</p>
-                <p><strong>Phone:</strong> <a href="tel:+919306101719">+91 9306101719</a></p>
-                <p><strong>Instagram:</strong> <a href="https://instagram.com/yvid_official" target="_blank">@yvid_official</a></p>
-                <div class="bio-box">
-                    <p><strong>Bio:</strong> Video editor & creator specializing in cinematic event recaps, podcast highlights, real estate showcases, and social shorts.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="site-footer">
-        <p>Created by Divy Garg</p>
-    </footer>
-
-    <!-- JavaScript -->
-    <script>
-        // Page Navigation Switcher
-        const navLinks = document.querySelectorAll('.nav-link');
-        const pages = document.querySelectorAll('.page');
-
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetId = link.getAttribute('data-target');
-                if (!targetId) return;
-
-                navLinks.forEach(l => l.classList.remove('active'));
-                link.classList.add('active');
-
-                pages.forEach(page => {
-                    page.classList.remove('active-page');
-                    if (page.id === targetId) {
-                        page.classList.add('active-page');
-                    }
-                });
-                window.scrollTo(0, 0);
-            });
-        });
-
-        // Master Video Database mapped with short category tags
-        const videoData = [
-            {
-                "title": "MG Cyberster",
-                "category": "Automotive",
-                "isSelected": true,
-                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784891306/porti_cazavu.mp4"
+                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784785852/real_estate_a51uvv.mp4"
             },
             {
                 "title": "Doctor Podcast",
@@ -322,7 +740,7 @@
             },
             {
                 "title": "Indian Realtor",
-                "category": "Realty",
+                "category": "Realtor",
                 "isSelected": true,
                 "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784722074/fashion_1_ty2szd.mp4"
             },
@@ -334,7 +752,7 @@
             },
             {
                 "title": "Canadian Realtor",
-                "category": "Realty",
+                "category": "Realtor",
                 "isSelected": false,
                 "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784722499/fashion_3_uvpnqs.mp4"
             },
@@ -346,7 +764,7 @@
             }
         ];
 
-        let currentCategoryVideos = videoData.filter(v => v.isSelected); // Default to Selected Works (the 4 specified clips)
+        let currentCategoryVideos = videoData.filter(v => v.isSelected);
         let currentIndex = 0;
 
         function renderCarousel() {
@@ -390,7 +808,6 @@
                     </div>
                 `;
 
-                // Setup Rotation Event Listener (Isolates rotation exclusively to the video clip)
                 const rotateBtn = card.querySelector('.rotate-btn');
                 const vid = card.querySelector('video');
                 let rotationAngle = 0;
@@ -406,7 +823,6 @@
                     }
                 });
 
-                // Click video to toggle play/pause smoothly
                 vid.addEventListener('click', () => {
                     if (card.classList.contains('card-center')) {
                         if (vid.paused) {
@@ -417,7 +833,6 @@
                     }
                 });
 
-                // Clicking side cards shifts them into center view
                 card.addEventListener('click', () => {
                     if (positionClass === 'card-left') {
                         prevSlide();
@@ -428,7 +843,6 @@
 
                 container.appendChild(card);
 
-                // Indicator dot
                 const dot = document.createElement('span');
                 dot.className = `indicator-dot ${index === currentIndex ? 'active' : ''}`;
                 dot.addEventListener('click', () => {
@@ -438,7 +852,6 @@
                 indicators.appendChild(dot);
             });
 
-            // Automated Play/Pause Workflow for center card
             const cards = container.querySelectorAll('.carousel-card');
             cards.forEach(card => {
                 const vid = card.querySelector('video');
@@ -470,7 +883,6 @@
         document.getElementById('mobNextBtn').addEventListener('click', nextSlide);
         document.getElementById('mobPrevBtn').addEventListener('click', prevSlide);
 
-        // Filter logic with frosted-glass panel buttons
         const filterBtns = document.querySelectorAll('.filter-btn');
         filterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -488,207 +900,6 @@
             });
         });
 
-        // Initial render
-        renderCarousel();
-
-        // Modal Pop-up Functionality
-        const modal = document.getElementById('bioModal');
-        const modalBtn = document.getElementById('profileModalBtn');
-        const aboutNavBtn = document.getElementById('aboutNavBtn');
-        const closeModal = document.getElementById('closeModal');
-
-        modalBtn.addEventListener('click', () => { modal.style.display = 'flex'; });
-        aboutNavBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            modal.style.display = 'flex';
-        });
-        closeModal.addEventListener('click', () => { modal.style.display = 'none'; });
-        window.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
-    </script>
-</body>
-</html>"
-            },
-            {
-                "title": "Doctor Podcast",
-                "category": "Podcast",
-                "isSelected": true,
-                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784723320/fashion_5_zrq5sn.mp4"
-            },
-            {
-                "title": "Club Velocity",
-                "category": "Nightlife",
-                "isSelected": true,
-                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784785855/real_estate_1_zha2kf.mp4"
-            },
-            {
-                "title": "Indian Realtor",
-                "category": "Realtor",
-                "isSelected": true,
-                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784722074/fashion_1_ty2szd.mp4"
-            },
-            {
-                "title": "Hackathon",
-                "category": "Events",
-                "isSelected": false,
-                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784785852/real_estate_a51uvv.mp4"
-            },
-            {
-                "title": "Canadian Realtor",
-                "category": "Realtor",
-                "isSelected": false,
-                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784722499/fashion_3_uvpnqs.mp4"
-            },
-            {
-                "title": "Resort Showcase",
-                "category": "Hospitality",
-                "isSelected": false,
-                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784723336/fashion_4_o5fv8f.mp4"
-            }
-        ];
-
-        let currentCategoryVideos = videoData.filter(v => v.isSelected); // Default to Selected Works (the 4 specified clips)
-        let currentIndex = 0;
-
-        function renderCarousel() {
-            const container = document.getElementById('carouselContainer');
-            const indicators = document.getElementById('carouselIndicators');
-            container.innerHTML = '';
-            indicators.innerHTML = '';
-
-            if (currentCategoryVideos.length === 0) {
-                container.innerHTML = `<div style="display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#888;">No videos found in this category.</div>`;
-                return;
-            }
-
-            currentCategoryVideos.forEach((video, index) => {
-                const card = document.createElement('div');
-                card.className = 'carousel-card';
-                
-                let positionClass = 'hide';
-                if (index === currentIndex) {
-                    positionClass = 'card-center';
-                } else if (index === (currentIndex - 1 + currentCategoryVideos.length) % currentCategoryVideos.length) {
-                    positionClass = 'card-left';
-                } else if (index === (currentIndex + 1) % currentCategoryVideos.length) {
-                    positionClass = 'card-right';
-                }
-                card.classList.add(positionClass);
-
-                card.innerHTML = `
-                    <div class="video-wrapper" style="width:100%; height:100%;">
-                        <video muted playsinline loop class="rotatable-video" style="width:100%; height:100%; object-fit:contain; background-color:#000000;">
-                            <source src="${video.src}" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                        <button class="rotate-btn" aria-label="Rotate video" title="Rotate Clip">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.73-5.73"/></svg>
-                        </button>
-                    </div>
-                    <div class="reel-overlay-info">
-                        <span class="reel-category">${video.category}</span>
-                        <h3 class="reel-title">${video.title}</h3>
-                    </div>
-                `;
-
-                // Setup Rotation Event Listener (Isolates rotation exclusively to the video clip)
-                const rotateBtn = card.querySelector('.rotate-btn');
-                const vid = card.querySelector('video');
-                let rotationAngle = 0;
-
-                rotateBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    rotationAngle = (rotationAngle + 90) % 360;
-                    
-                    if (rotationAngle === 90 || rotationAngle === 270) {
-                        vid.style.transform = `rotate(${rotationAngle}deg) scale(0.5625)`;
-                    } else {
-                        vid.style.transform = `rotate(${rotationAngle}deg) scale(1)`;
-                    }
-                });
-
-                // Click video to toggle play/pause smoothly
-                vid.addEventListener('click', () => {
-                    if (card.classList.contains('card-center')) {
-                        if (vid.paused) {
-                            vid.play();
-                        } else {
-                            vid.pause();
-                        }
-                    }
-                });
-
-                // Clicking side cards shifts them into center view
-                card.addEventListener('click', () => {
-                    if (positionClass === 'card-left') {
-                        prevSlide();
-                    } else if (positionClass === 'card-right') {
-                        nextSlide();
-                    }
-                });
-
-                container.appendChild(card);
-
-                // Indicator dot
-                const dot = document.createElement('span');
-                dot.className = `indicator-dot ${index === currentIndex ? 'active' : ''}`;
-                dot.addEventListener('click', () => {
-                    currentIndex = index;
-                    renderCarousel();
-                });
-                indicators.appendChild(dot);
-            });
-
-            // Automated Play/Pause Workflow for center card
-            const cards = container.querySelectorAll('.carousel-card');
-            cards.forEach(card => {
-                const vid = card.querySelector('video');
-                if (vid) {
-                    if (card.classList.contains('card-center')) {
-                        vid.play().catch(error => {
-                            console.log("Autoplay restricted:", error);
-                        });
-                    } else {
-                        vid.pause();
-                        vid.currentTime = 0;
-                    }
-                }
-            });
-        }
-
-        function nextSlide() {
-            currentIndex = (currentIndex + 1) % currentCategoryVideos.length;
-            renderCarousel();
-        }
-
-        function prevSlide() {
-            currentIndex = (currentIndex - 1 + currentCategoryVideos.length) % currentCategoryVideos.length;
-            renderCarousel();
-        }
-
-        document.getElementById('nextBtn').addEventListener('click', nextSlide);
-        document.getElementById('prevBtn').addEventListener('click', prevSlide);
-        document.getElementById('mobNextBtn').addEventListener('click', nextSlide);
-        document.getElementById('mobPrevBtn').addEventListener('click', prevSlide);
-
-        // Filter logic with frosted-glass panel buttons
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                const category = btn.getAttribute('data-filter');
-                
-                if (category === 'Selected Works') {
-                    currentCategoryVideos = videoData.filter(v => v.isSelected);
-                } else {
-                    currentCategoryVideos = videoData.filter(v => v.category === category);
-                }
-                currentIndex = 0;
-                renderCarousel();
-            });
-        });
-
-        // Initial render
         renderCarousel();
 
         // Modal Pop-up Functionality
