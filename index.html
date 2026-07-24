@@ -13,6 +13,39 @@
                 display: none !important;
             }
         }
+        
+        /* Rotation Button & Rotatable Video Styling */
+        .video-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .rotatable-video {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .rotate-btn {
+            position: absolute;
+            bottom: 24px;
+            right: 16px;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease, transform 0.2s ease;
+            z-index: 20;
+        }
+
+        .rotate-btn:hover {
+            background: rgba(0, 0, 0, 0.85);
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
@@ -50,6 +83,7 @@
                 <button class="filter-btn" data-filter="Real Estate">Real Estate</button>
                 <button class="filter-btn" data-filter="Hospitality Showcase">Hospitality Showcase</button>
                 <button class="filter-btn" data-filter="After Dark">After Dark</button>
+                <button class="filter-btn" data-filter="Automotive & Commercial">Automotive & Commercial</button>
             </div>
 
             <!-- 3D Spiral Carousel Stage -->
@@ -145,8 +179,13 @@
             });
         });
 
-        // Video Data Source
+        // Video Data Source (Including new MG Cyberster edit under Automotive & Commercial)
         const videoData = [
+            {
+                "title": "MG Cyberster",
+                "category": "Automotive & Commercial",
+                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784886148/portfolio_jle935.mp4"
+            },
             {
                 "title": "Hackathon",
                 "category": "Event Recaps",
@@ -209,16 +248,36 @@
 
                 card.innerHTML = `
                     <div class="video-wrapper" style="width:100%; height:100%;">
-                        <video controls muted playsinline style="width:100%; height:100%; object-fit:contain; background-color:#000000;">
+                        <video controls muted playsinline class="rotatable-video" style="width:100%; height:100%; object-fit:contain; background-color:#000000;">
                             <source src="${video.src}" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
+                        <button class="rotate-btn" aria-label="Rotate video" title="Rotate Clip">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.73-5.73"/></svg>
+                        </button>
                     </div>
                     <div class="reel-overlay-info">
                         <span class="reel-category">${video.category}</span>
                         <h3 class="reel-title">${video.title}</h3>
                     </div>
                 `;
+
+                // Setup Rotation Event Listener
+                const rotateBtn = card.querySelector('.rotate-btn');
+                const vid = card.querySelector('video');
+                let rotationAngle = 0;
+
+                rotateBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // prevent card slide navigation trigger
+                    rotationAngle = (rotationAngle + 90) % 360;
+                    
+                    // Auto-adjust scale for 90° and 270° flips to fit cleanly within container bounds (1080x1920 ratio)
+                    if (rotationAngle === 90 || rotationAngle === 270) {
+                        vid.style.transform = `rotate(${rotationAngle}deg) scale(0.5625)`;
+                    } else {
+                        vid.style.transform = `rotate(${rotationAngle}deg) scale(1)`;
+                    }
+                });
 
                 // Clicking side cards shifts them into center view
                 card.addEventListener('click', () => {
