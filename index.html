@@ -367,33 +367,6 @@
             font-weight: 600;
         }
 
-        /* Interactive Category Transformation Button */
-        .transformation-trigger-btn {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            color: #FFFFFF;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            pointer-events: auto;
-            z-index: 25;
-        }
-
-        .transformation-trigger-btn:hover {
-            background: #FFFFFF;
-            color: #121212;
-            transform: translateY(-1px);
-        }
-
         .reel-title {
             font-size: 17px;
             font-weight: 600;
@@ -781,7 +754,7 @@
 
             <!-- Selected Works Header -->
             <div class="selected-works-header" id="selectedWorksHeader">
-                <span class="selected-badge">Selected Works</span>
+                <span class="selected-badge" id="selectedBadge">Selected Works</span>
             </div>
 
             <!-- 3D Spiral Carousel Stage -->
@@ -925,54 +898,42 @@
                 "title": "Club Velocity",
                 "category": "Nightlife",
                 "isSelected": true,
-                "hasTransformation": true,
-                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784785855/real_estate_1_zha2kf.mp4",
-                "transformSrc": "https://res.cloudinary.com/kvee22j1/video/upload/v1784903665/Sequence_03_2_wvmrqe.mp4" 
+                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784785855/real_estate_1_zha2kf.mp4"
             },
             {
                 "title": "MG Cyberster",
                 "category": "Automotive",
                 "isSelected": true,
-                "hasTransformation": true,
-                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784891306/porti_cazavu.mp4",
-                "transformSrc": "https://res.cloudinary.com/kvee22j1/video/upload/v1784901878/car_post_bvzu2k.mp4"
+                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784891306/porti_cazavu.mp4"
             },
             {
                 "title": "Doctor Podcast",
                 "category": "Podcast",
                 "isSelected": true,
-                "hasTransformation": true,
-                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784723320/fashion_5_zrq5sn.mp4",
-                "transformSrc": "https://res.cloudinary.com/kvee22j1/video/upload/v1784901871/freelance-video-editor-doctor-podcast-clinic-reels_rpgx7a.mp4"
+                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784723320/fashion_5_zrq5sn.mp4"
             },
             {
                 "title": "Indian Realtor",
                 "category": "Realtor",
                 "isSelected": true,
-                "hasTransformation": true,
-                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784722074/fashion_1_ty2szd.mp4",
-                "transformSrc": "https://res.cloudinary.com/kvee22j1/video/upload/v1784903565/Sequence_03_1_frgbub.mp4"
+                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784722074/fashion_1_ty2szd.mp4"
             },
             {
                 "title": "Hackathon",
                 "category": "Events",
                 "isSelected": false,
-                "hasTransformation": false,
                 "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784785852/real_estate_a51uvv.mp4"
             },
             {
                 "title": "Canadian Realtor",
                 "category": "Realtor",
                 "isSelected": false,
-                "hasTransformation": true,
-                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784722499/fashion_3_uvpnqs.mp4",
-                "transformSrc": "https://res.cloudinary.com/kvee22j1/video/upload/v1784722074/fashion_1_ty2szd.mp4"
+                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784722499/fashion_3_uvpnqs.mp4"
             },
             {
                 "title": "Resort Showcase",
                 "category": "Hospitality",
                 "isSelected": false,
-                "hasTransformation": false,
                 "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784723336/fashion_4_o5fv8f.mp4"
             }
         ];
@@ -996,8 +957,6 @@
                 currentIndex = 0;
             }
 
-            const showCompareButton = video => video.hasTransformation;
-
             currentCategoryVideos.forEach((video, index) => {
                 const card = document.createElement('div');
                 card.className = 'carousel-card';
@@ -1007,7 +966,7 @@
                 if (diff > total / 2) diff -= total;
 
                 if (diff === 0) {
-                    card.classList.add('card-center', 'show-controls');
+                    card.classList.add('card-center');
                 } else if (diff === 1 || (diff === -(total - 1))) {
                     card.classList.add('card-right');
                 } else if (diff === -1 || diff === (total - 1)) {
@@ -1035,7 +994,6 @@
                         <div class="reel-overlay-info">
                             <div class="badge-row">
                                 <span class="reel-category">${video.category}</span>
-                                ${showCompareButton(video) ? `<button class="transformation-trigger-btn">✨ Compare</button>` : ''}
                             </div>
                             <div class="reel-title">${video.title}</div>
                         </div>
@@ -1055,14 +1013,34 @@
 
                 if (diff === 0) {
                     const vidElement = card.querySelector('video');
+                    const videoWrapper = card.querySelector('.video-wrapper');
                     const playPauseBtn = card.querySelector('.play-pause-btn');
                     const soundBtn = card.querySelector('.sound-toggle-btn');
                     const expandBtn = card.querySelector('.expand-btn');
                     const rewindBtn = card.querySelector('.rewind-btn');
                     const forwardBtn = card.querySelector('.forward-btn');
-                    const transformBtn = card.querySelector('.transformation-trigger-btn');
+                    let hideControlsTimeout = null;
 
-                    playPauseBtn.addEventListener('click', () => {
+                    videoWrapper.addEventListener('click', (e) => {
+                        if (e.target.closest('button')) return;
+
+                        if (vidElement.paused) {
+                            vidElement.play();
+                            playPauseBtn.textContent = '❚❚';
+                        } else {
+                            vidElement.pause();
+                            playPauseBtn.textContent = '▶';
+                        }
+
+                        card.classList.add('show-controls');
+                        clearTimeout(hideControlsTimeout);
+                        hideControlsTimeout = setTimeout(() => {
+                            card.classList.remove('show-controls');
+                        }, 700);
+                    });
+
+                    playPauseBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
                         if (vidElement.paused) {
                             vidElement.play();
                             playPauseBtn.textContent = '❚❚';
@@ -1072,31 +1050,21 @@
                         }
                     });
 
-                    soundBtn.addEventListener('click', () => {
+                    soundBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
                         vidElement.muted = !vidElement.muted;
                         soundBtn.style.opacity = vidElement.muted ? '0.6' : '1';
                     });
 
-                    rewindBtn.addEventListener('click', () => {
+                    rewindBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
                         vidElement.currentTime = Math.max(0, vidElement.currentTime - 10);
                     });
 
-                    forwardBtn.addEventListener('click', () => {
+                    forwardBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
                         vidElement.currentTime = Math.min(vidElement.duration, vidElement.currentTime + 10);
                     });
-
-                    if (transformBtn && showCompareButton(video)) {
-                        let isTransformed = false;
-                        transformBtn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            isTransformed = !isTransformed;
-                            vidElement.src = isTransformed ? video.transformSrc : video.src;
-                            vidElement.load();
-                            vidElement.play();
-                            transformBtn.style.background = isTransformed ? '#FFFFFF' : '';
-                            transformBtn.style.color = isTransformed ? '#121212' : '';
-                        });
-                    }
 
                     expandBtn.addEventListener('click', (e) => {
                         e.stopPropagation();
@@ -1131,12 +1099,16 @@
         });
 
         const filterBtns = document.querySelectorAll('.filter-btn');
+        const selectedBadge = document.getElementById('selectedBadge');
+
         filterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 filterBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
 
                 currentFilter = btn.getAttribute('data-filter');
+                selectedBadge.textContent = currentFilter;
+
                 if (currentFilter === 'Selected Works') {
                     currentCategoryVideos = videoData.filter(v => v.isSelected);
                 } else if (currentFilter === 'All') {
