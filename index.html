@@ -994,6 +994,9 @@
                 currentIndex = 0;
             }
 
+            // Determine if Compare button should be shown (hide for 'Selected Works' and 'All')
+            const showCompareButton = video => video.hasTransformation && currentFilter !== 'Selected Works' && currentFilter !== 'All';
+
             // Render cards
             currentCategoryVideos.forEach((video, index) => {
                 const card = document.createElement('div');
@@ -1033,7 +1036,7 @@
                         <div class="reel-overlay-info">
                             <div class="badge-row">
                                 <span class="reel-category">${video.category}</span>
-                                ${video.hasTransformation ? `<button class="transformation-trigger-btn">✨ Compare</button>` : ''}
+                                ${showCompareButton(video) ? `<button class="transformation-trigger-btn">✨ Compare</button>` : ''}
                             </div>
                             <div class="reel-title">${video.title}</div>
                         </div>
@@ -1085,12 +1088,13 @@
                         vidElement.currentTime = Math.min(vidElement.duration, vidElement.currentTime + 10);
                     });
 
-                    if (transformBtn && video.hasTransformation) {
+                    if (transformBtn && showCompareButton(video)) {
                         let isTransformed = false;
                         transformBtn.addEventListener('click', (e) => {
                             e.stopPropagation();
                             isTransformed = !isTransformed;
                             vidElement.src = isTransformed ? video.transformSrc : video.src;
+                            vidElement.load();
                             vidElement.play();
                             transformBtn.style.background = isTransformed ? '#FFFFFF' : '';
                             transformBtn.style.color = isTransformed ? '#121212' : '';
@@ -1099,7 +1103,7 @@
 
                     expandBtn.addEventListener('click', (e) => {
                         e.stopPropagation();
-                        openVideoModal(video.src);
+                        openVideoModal(vidElement.src);
                     });
                 }
 
@@ -1184,6 +1188,7 @@
 
         function openVideoModal(src) {
             enlargedVideo.src = src;
+            enlargedVideo.load();
             enlargedVideo.muted = false;
             enlargedVideo.play();
             videoModal.style.display = 'flex';
