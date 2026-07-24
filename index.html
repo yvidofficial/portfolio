@@ -428,7 +428,7 @@
             border-radius: 4px;
         }
 
-        /* Category Filter Deck Fixed Layout */
+        /* Fixed Category Filter Deck (Smooth Swipe & Flex-start alignment) */
         .glass-filter-deck-wrapper {
             max-width: 950px;
             margin: 35px auto 0 auto;
@@ -444,12 +444,11 @@
 
         .glass-filter-deck {
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
             gap: 12px;
-            padding: 6px 10px;
+            padding: 6px 0;
             min-width: max-content;
-            margin: 0 auto;
         }
 
         .filter-btn {
@@ -675,9 +674,6 @@
         @media (max-width: 768px) {
             .scroll-categories-hint {
                 display: block;
-            }
-            .glass-filter-deck {
-                justify-content: flex-start;
             }
             .carousel-stage-wrapper {
                 max-width: 100%;
@@ -939,7 +935,7 @@
 
                 card.innerHTML = `
                     <div class="video-wrapper">
-                        <!-- Audio enabled by default (muted removed) -->
+                        <!-- Audio enabled by default -->
                         <video playsinline loop preload="auto" class="rotatable-video">
                             <source src="${video.src}" type="video/mp4">
                             Your browser does not support the video tag.
@@ -951,7 +947,7 @@
                         </button>
                         <div class="top-right-controls">
                             <button class="top-action-btn sound-toggle-btn" aria-label="Toggle Sound" title="Mute/Unmute">
-                                <svg class="sound-icon-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
                             </button>
                             <button class="top-action-btn rotate-btn" aria-label="Rotate video" title="Rotate Clip">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.73-5.73"/></svg>
@@ -974,7 +970,6 @@
                 const expandBtn = card.querySelector('.expand-btn');
                 const rotateBtn = card.querySelector('.rotate-btn');
                 const soundToggleBtn = card.querySelector('.sound-toggle-btn');
-                const soundIcon = card.querySelector('.sound-icon-on');
                 const vid = card.querySelector('video');
                 const videoWrapper = card.querySelector('.video-wrapper');
                 const playPauseBtn = card.querySelector('.play-pause-btn');
