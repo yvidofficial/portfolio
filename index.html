@@ -348,6 +348,14 @@
             z-index: 15;
         }
 
+        .badge-row {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+            pointer-events: auto;
+        }
+
         .reel-category {
             font-size: 10px;
             text-transform: uppercase;
@@ -356,9 +364,32 @@
             backdrop-filter: blur(6px);
             padding: 4px 8px;
             border-radius: 4px;
-            display: inline-block;
-            margin-bottom: 8px;
             font-weight: 600;
+        }
+
+        /* Interactive Category Transformation Button */
+        .transformation-trigger-btn {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #FFFFFF;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .transformation-trigger-btn:hover {
+            background: #FFFFFF;
+            color: #121212;
+            transform: translateY(-1px);
         }
 
         .reel-title {
@@ -428,7 +459,7 @@
             border-radius: 4px;
         }
 
-        /* Fixed Category Filter Deck (Smooth Swipe & Flex-start alignment) */
+        /* Fixed Category Filter Deck */
         .glass-filter-deck-wrapper {
             max-width: 950px;
             margin: 35px auto 0 auto;
@@ -566,7 +597,7 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(5px);
             justify-content: center;
             align-items: center;
@@ -601,6 +632,20 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
+        }
+
+        .modal-top-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            z-index: 30;
+        }
+
+        .modal-top-sound {
+            position: absolute;
+            top: 68px;
+            right: 16px;
+            z-index: 30;
         }
 
         .close-btn {
@@ -765,9 +810,10 @@
                     <button class="filter-btn" data-filter="Hospitality">Hospitality</button>
                     <button class="filter-btn" data-filter="Nightlife">Nightlife</button>
                 </div>
-                <div class="scroll-categories-hint">
-                    <span>← Swipe categories to explore more →</span>
-                </div>
+            </div>
+            <!-- Swipe hint text placed outside the scrolling container so it stays fixed/centered -->
+            <div class="scroll-categories-hint">
+                <span>← Swipe categories to explore more →</span>
             </div>
         </section>
 
@@ -824,8 +870,20 @@
     <!-- Video Enlarge Fullscreen Modal -->
     <div id="videoModal" class="modal">
         <div class="video-modal-content">
-            <span class="close-btn" id="closeVideoModal">&times;</span>
-            <video id="enlargedVideo" controls autoplay playsinline></video>
+            <button class="top-action-btn modal-top-close" id="closeVideoModal" aria-label="Close video" title="Close">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <button class="top-action-btn modal-top-sound modal-sound-toggle-btn" aria-label="Toggle Sound" title="Mute/Unmute">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+            </button>
+
+            <video id="enlargedVideo" playsinline loop autoplay></video>
+
+            <div class="video-controls-overlay modal-video-controls show-controls">
+                <button class="ctrl-action-btn modal-rewind" title="Back 10s">-10s</button>
+                <button class="ctrl-action-btn ctrl-main-btn modal-play-pause" title="Play/Pause">❚❚</button>
+                <button class="ctrl-action-btn modal-forward" title="Forward 10s">+10s</button>
+            </div>
         </div>
     </div>
 
@@ -865,48 +923,61 @@
                 "title": "Club Velocity",
                 "category": "Nightlife",
                 "isSelected": true,
-                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784785855/real_estate_1_zha2kf.mp4"
+                "hasTransformation": true,
+                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784785855/real_estate_1_zha2kf.mp4",
+                "transformSrc": "https://res.cloudinary.com/kvee22j1/video/upload/v1784903665/Sequence_03_2_wvmrqe.mp4" 
             },
             {
                 "title": "MG Cyberster",
                 "category": "Automotive",
                 "isSelected": true,
-                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784891306/porti_cazavu.mp4"
+                "hasTransformation": true,
+                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784891306/porti_cazavu.mp4",
+                "transformSrc": "https://res.cloudinary.com/kvee22j1/video/upload/v1784901878/car_post_bvzu2k.mp4"
             },
             {
                 "title": "Doctor Podcast",
                 "category": "Podcast",
                 "isSelected": true,
-                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784723320/fashion_5_zrq5sn.mp4"
+                "hasTransformation": true,
+                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784723320/fashion_5_zrq5sn.mp4",
+                "transformSrc": "https://res.cloudinary.com/kvee22j1/video/upload/v1784901871/freelance-video-editor-doctor-podcast-clinic-reels_rpgx7a.mp4"
             },
             {
                 "title": "Indian Realtor",
                 "category": "Realtor",
                 "isSelected": true,
-                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784722074/fashion_1_ty2szd.mp4"
+                "hasTransformation": true,
+                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784722074/fashion_1_ty2szd.mp4",
+                "transformSrc": "https://res.cloudinary.com/kvee22j1/video/upload/v1784903565/Sequence_03_1_frgbub.mp4"
             },
             {
                 "title": "Hackathon",
                 "category": "Events",
                 "isSelected": false,
+                "hasTransformation": false,
                 "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784785852/real_estate_a51uvv.mp4"
             },
             {
                 "title": "Canadian Realtor",
                 "category": "Realtor",
                 "isSelected": false,
-                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784722499/fashion_3_uvpnqs.mp4"
+                "hasTransformation": true,
+                "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784722499/fashion_3_uvpnqs.mp4",
+                "transformSrc": "https://res.cloudinary.com/kvee22j1/video/upload/v1784722074/fashion_1_ty2szd.mp4"
             },
             {
                 "title": "Resort Showcase",
                 "category": "Hospitality",
                 "isSelected": false,
+                "hasTransformation": false,
                 "src": "https://res.cloudinary.com/kvee22j1/video/upload/v1784723336/fashion_4_o5fv8f.mp4"
             }
         ];
 
         let currentCategoryVideos = videoData.filter(v => v.isSelected);
-        let currentIndex = 1; // MG Cyberster center
+        let currentIndex = 0;
+        let currentFilter = 'Selected Works';
 
         function renderCarousel() {
             const container = document.getElementById('carouselContainer');
@@ -919,248 +990,183 @@
                 return;
             }
 
+            if (currentIndex >= currentCategoryVideos.length) {
+                currentIndex = 0;
+            }
+
+            // Render cards
             currentCategoryVideos.forEach((video, index) => {
                 const card = document.createElement('div');
                 card.className = 'carousel-card';
-                
-                let positionClass = 'hide';
-                if (index === currentIndex) {
-                    positionClass = 'card-center';
-                } else if (index === (currentIndex - 1 + currentCategoryVideos.length) % currentCategoryVideos.length) {
-                    positionClass = 'card-left';
-                } else if (index === (currentIndex + 1) % currentCategoryVideos.length) {
-                    positionClass = 'card-right';
+
+                // Determine 3D positioning class
+                const total = currentCategoryVideos.length;
+                let diff = (index - currentIndex + total) % total;
+                if (diff > total / 2) diff -= total;
+
+                if (diff === 0) {
+                    card.classList.add('card-center', 'show-controls');
+                } else if (diff === 1 || (diff === -(total - 1))) {
+                    card.classList.add('card-right');
+                } else if (diff === -1 || diff === (total - 1)) {
+                    card.classList.add('card-left');
+                } else {
+                    card.classList.add('hide');
                 }
-                card.classList.add(positionClass);
 
                 card.innerHTML = `
                     <div class="video-wrapper">
-                        <!-- Audio enabled by default -->
-                        <video playsinline loop preload="auto" class="rotatable-video">
-                            <source src="${video.src}" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                        
-                        <!-- Permanent Top Action Buttons -->
-                        <button class="expand-btn" aria-label="Enlarge video" title="Enlarge View">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                        <button class="expand-btn" title="Enlarge Video">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
                         </button>
                         <div class="top-right-controls">
-                            <button class="top-action-btn sound-toggle-btn" aria-label="Toggle Sound" title="Mute/Unmute">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-                            </button>
-                            <button class="top-action-btn rotate-btn" aria-label="Rotate video" title="Rotate Clip">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.73-5.73"/></svg>
+                            <button class="top-action-btn sound-toggle-btn" title="Mute/Unmute">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
                             </button>
                         </div>
-
-                        <!-- Liquid Glass Center Controls Overlay -->
+                        <video class="rotatable-video" src="${video.src}" playsinline muted loop autoplay></video>
                         <div class="video-controls-overlay">
                             <button class="ctrl-action-btn rewind-btn" title="Back 10s">-10s</button>
                             <button class="ctrl-action-btn ctrl-main-btn play-pause-btn" title="Play/Pause">❚❚</button>
                             <button class="ctrl-action-btn forward-btn" title="Forward 10s">+10s</button>
                         </div>
-                    </div>
-                    <div class="reel-overlay-info">
-                        <span class="reel-category">${video.category}</span>
-                        <h3 class="reel-title">${video.title}</h3>
+                        <div class="reel-overlay-info">
+                            <div class="badge-row">
+                                <span class="reel-category">${video.category}</span>
+                                ${video.hasTransformation ? `<button class="transformation-trigger-btn">✨ Compare</button>` : ''}
+                            </div>
+                            <div class="reel-title">${video.title}</div>
+                        </div>
                     </div>
                 `;
 
-                const expandBtn = card.querySelector('.expand-btn');
-                const rotateBtn = card.querySelector('.rotate-btn');
-                const soundToggleBtn = card.querySelector('.sound-toggle-btn');
-                const vid = card.querySelector('video');
-                const videoWrapper = card.querySelector('.video-wrapper');
-                const playPauseBtn = card.querySelector('.play-pause-btn');
-                const rewindBtn = card.querySelector('.rewind-btn');
-                const forwardBtn = card.querySelector('.forward-btn');
-                let rotationAngle = 0;
-                let hideControlsTimeout = null;
-
-                // Enlarge Modal Logic
-                expandBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const videoModal = document.getElementById('videoModal');
-                    const enlargedVideo = document.getElementById('enlargedVideo');
-                    enlargedVideo.src = video.src;
-                    videoModal.style.display = 'flex';
-                    enlargedVideo.play().catch(err => console.log(err));
-                });
-
-                // Rotate button logic
-                rotateBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    rotationAngle = (rotationAngle + 90) % 360;
-                    if (rotationAngle === 90 || rotationAngle === 270) {
-                        vid.style.transform = `rotate(${rotationAngle}deg) scale(0.5625)`;
-                    } else {
-                        vid.style.transform = `rotate(${rotationAngle}deg) scale(1)`;
+                // Card click event for navigation if side card is clicked
+                card.addEventListener('click', (e) => {
+                    if (e.target.closest('button')) return; // ignore button clicks
+                    if (card.classList.contains('card-right')) {
+                        currentIndex = (currentIndex + 1) % currentCategoryVideos.length;
+                        renderCarousel();
+                    } else if (card.classList.contains('card-left')) {
+                        currentIndex = (currentIndex - 1 + currentCategoryVideos.length) % currentCategoryVideos.length;
+                        renderCarousel();
                     }
                 });
 
-                // Mute / Unmute audio toggle in top right corner
-                soundToggleBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    vid.muted = !vid.muted;
-                    if (vid.muted) {
-                        soundToggleBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`;
-                    } else {
-                        soundToggleBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`;
-                    }
-                });
+                // Video control listeners for center card
+                if (diff === 0) {
+                    const vidElement = card.querySelector('video');
+                    const playPauseBtn = card.querySelector('.play-pause-btn');
+                    const soundBtn = card.querySelector('.sound-toggle-btn');
+                    const expandBtn = card.querySelector('.expand-btn');
+                    const rewindBtn = card.querySelector('.rewind-btn');
+                    const forwardBtn = card.querySelector('.forward-btn');
+                    const transformBtn = card.querySelector('.transformation-trigger-btn');
 
-                // Tap video background to toggle Play/Pause and show liquid glass controls with 0.5s auto-hide
-                videoWrapper.addEventListener('click', (e) => {
-                    if (card.classList.contains('card-center')) {
-                        // Toggle play/pause state directly
-                        if (vid.paused) {
-                            vid.play();
+                    playPauseBtn.addEventListener('click', () => {
+                        if (vidElement.paused) {
+                            vidElement.play();
                             playPauseBtn.textContent = '❚❚';
                         } else {
-                            vid.pause();
+                            vidElement.pause();
                             playPauseBtn.textContent = '▶';
                         }
+                    });
 
-                        // Show liquid glass controls & set 0.5s timer
-                        if (hideControlsTimeout) {
-                            clearTimeout(hideControlsTimeout);
-                            hideControlsTimeout = null;
-                        }
+                    soundBtn.addEventListener('click', () => {
+                        vidElement.muted = !vidElement.muted;
+                        soundBtn.style.opacity = vidElement.muted ? '0.6' : '1';
+                    });
 
-                        card.classList.add('show-controls');
-                        hideControlsTimeout = setTimeout(() => {
-                            card.classList.remove('show-controls');
-                        }, 500);
+                    rewindBtn.addEventListener('click', () => {
+                        vidElement.currentTime = Math.max(0, vidElement.currentTime - 10);
+                    });
 
-                    } else if (positionClass === 'card-left') {
-                        prevSlide();
-                    } else if (positionClass === 'card-right') {
-                        nextSlide();
+                    forwardBtn.addEventListener('click', () => {
+                        vidElement.currentTime = Math.min(vidElement.duration, vidElement.currentTime + 10);
+                    });
+
+                    if (transformBtn && video.hasTransformation) {
+                        let isTransformed = false;
+                        transformBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            isTransformed = !isTransformed;
+                            vidElement.src = isTransformed ? video.transformSrc : video.src;
+                            vidElement.play();
+                            transformBtn.style.background = isTransformed ? '#FFFFFF' : '';
+                            transformBtn.style.color = isTransformed ? '#121212' : '';
+                        });
                     }
-                });
 
-                // Play / Pause button explicitly
-                playPauseBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    if (vid.paused) {
-                        vid.play();
-                        playPauseBtn.textContent = '❚❚';
-                    } else {
-                        vid.pause();
-                        playPauseBtn.textContent = '▶';
-                    }
-                });
-
-                // Rewind 10s
-                rewindBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    vid.currentTime = Math.max(0, vid.currentTime - 10);
-                });
-
-                // Forward 10s
-                forwardBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    vid.currentTime = Math.min(vid.duration, vid.currentTime + 10);
-                });
+                    expandBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openVideoModal(video.src);
+                    });
+                }
 
                 container.appendChild(card);
+            });
 
-                const dot = document.createElement('span');
-                dot.className = `indicator-dot ${index === currentIndex ? 'active' : ''}`;
+            // Render indicators
+            currentCategoryVideos.forEach((_, idx) => {
+                const dot = document.createElement('div');
+                dot.className = `indicator-dot ${idx === currentIndex ? 'active' : ''}`;
                 dot.addEventListener('click', () => {
-                    currentIndex = index;
+                    currentIndex = idx;
                     renderCarousel();
                 });
                 indicators.appendChild(dot);
             });
-
-            // Handle Autoplay for center card
-            const cards = container.querySelectorAll('.carousel-card');
-            cards.forEach(card => {
-                const vid = card.querySelector('video');
-                const playPauseBtn = card.querySelector('.play-pause-btn');
-                if (vid) {
-                    if (card.classList.contains('card-center')) {
-                        vid.play().then(() => {
-                            if(playPauseBtn) playPauseBtn.textContent = '❚❚';
-                        }).catch(error => {
-                            console.log("Autoplay with audio restricted by browser, muted fallback applied:", error);
-                            vid.muted = true;
-                            vid.play();
-                            const soundBtn = card.querySelector('.sound-toggle-btn');
-                            if(soundBtn) {
-                                soundBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`;
-                            }
-                        });
-                    } else {
-                        vid.pause();
-                        vid.currentTime = 0;
-                        card.classList.remove('show-controls');
-                    }
-                }
-            });
         }
 
-        function nextSlide() {
+        // Navigation button listeners
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if (currentCategoryVideos.length === 0) return;
             currentIndex = (currentIndex + 1) % currentCategoryVideos.length;
             renderCarousel();
-        }
+        });
 
-        function prevSlide() {
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            if (currentCategoryVideos.length === 0) return;
             currentIndex = (currentIndex - 1 + currentCategoryVideos.length) % currentCategoryVideos.length;
             renderCarousel();
-        }
+        });
 
-        document.getElementById('nextBtn').addEventListener('click', nextSlide);
-        document.getElementById('prevBtn').addEventListener('click', prevSlide);
-
-        // Filter logic
+        // Category Filter Deck Logic
         const filterBtns = document.querySelectorAll('.filter-btn');
-        const selectedWorksHeader = document.getElementById('selectedWorksHeader');
-
         filterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 filterBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                const category = btn.getAttribute('data-filter');
-                
-                if (category === 'Selected Works') {
+
+                currentFilter = btn.getAttribute('data-filter');
+                if (currentFilter === 'Selected Works') {
                     currentCategoryVideos = videoData.filter(v => v.isSelected);
-                    currentIndex = 1;
-                    selectedWorksHeader.style.display = 'block';
-                } else if (category === 'All') {
-                    currentCategoryVideos = [...videoData];
-                    currentIndex = 0;
-                    selectedWorksHeader.style.display = 'none';
+                } else if (currentFilter === 'All') {
+                    currentCategoryVideos = videoData;
                 } else {
-                    currentCategoryVideos = videoData.filter(v => v.category === category);
-                    currentIndex = 0;
-                    selectedWorksHeader.style.display = 'none';
+                    currentCategoryVideos = videoData.filter(v => v.category === currentFilter);
                 }
+
+                currentIndex = 0;
                 renderCarousel();
             });
         });
 
-        renderCarousel();
-
-        // Modal Functionality
+        // Modals Logic
         const bioModal = document.getElementById('bioModal');
-        const modalBtn = document.getElementById('profileModalBtn');
+        const videoModal = document.getElementById('videoModal');
+        const profileModalBtn = document.getElementById('profileModalBtn');
         const aboutNavBtn = document.getElementById('aboutNavBtn');
         const closeModal = document.getElementById('closeModal');
-
-        const videoModal = document.getElementById('videoModal');
         const closeVideoModal = document.getElementById('closeVideoModal');
         const enlargedVideo = document.getElementById('enlargedVideo');
 
-        modalBtn.addEventListener('click', () => { bioModal.style.display = 'flex'; });
+        profileModalBtn.addEventListener('click', () => { bioModal.style.display = 'flex'; });
         aboutNavBtn.addEventListener('click', (e) => {
             e.preventDefault();
             bioModal.style.display = 'flex';
         });
         closeModal.addEventListener('click', () => { bioModal.style.display = 'none'; });
-        
         closeVideoModal.addEventListener('click', () => {
             videoModal.style.display = 'none';
             enlargedVideo.pause();
@@ -1175,6 +1181,45 @@
                 enlargedVideo.src = '';
             }
         });
+
+        function openVideoModal(src) {
+            enlargedVideo.src = src;
+            enlargedVideo.muted = false;
+            enlargedVideo.play();
+            videoModal.style.display = 'flex';
+        }
+
+        // Modal video control buttons
+        const modalPlayPause = videoModal.querySelector('.modal-play-pause');
+        const modalRewind = videoModal.querySelector('.modal-rewind');
+        const modalForward = videoModal.querySelector('.modal-forward');
+        const modalSoundToggle = videoModal.querySelector('.modal-sound-toggle-btn');
+
+        modalPlayPause.addEventListener('click', () => {
+            if (enlargedVideo.paused) {
+                enlargedVideo.play();
+                modalPlayPause.textContent = '❚❚';
+            } else {
+                enlargedVideo.pause();
+                modalPlayPause.textContent = '▶';
+            }
+        });
+
+        modalRewind.addEventListener('click', () => {
+            enlargedVideo.currentTime = Math.max(0, enlargedVideo.currentTime - 10);
+        });
+
+        modalForward.addEventListener('click', () => {
+            enlargedVideo.currentTime = Math.min(enlargedVideo.duration, enlargedVideo.currentTime + 10);
+        });
+
+        modalSoundToggle.addEventListener('click', () => {
+            enlargedVideo.muted = !enlargedVideo.muted;
+            modalSoundToggle.style.opacity = enlargedVideo.muted ? '0.6' : '1';
+        });
+
+        // Initial render on load
+        renderCarousel();
     </script>
 </body>
 </html>
