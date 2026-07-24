@@ -200,13 +200,14 @@
             pointer-events: none;
         }
 
-        /* Video Wrapper & Click-to-Show Controls Overlay */
+        /* Video Wrapper & Overlay */
         .video-wrapper {
             position: relative;
             width: 100%;
             height: 100%;
             overflow: hidden;
             cursor: pointer;
+            background: #000;
         }
 
         .rotatable-video {
@@ -218,7 +219,33 @@
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Rotate Button (Always visible on top-right) */
+        /* Top-Left Enlarge (Expand) Button */
+        .expand-btn {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #FFFFFF;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+            z-index: 25;
+        }
+
+        .expand-btn:hover {
+            background: rgba(0, 0, 0, 0.85);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: scale(1.08);
+        }
+
+        /* Top-Right Rotate Button */
         .rotate-btn {
             position: absolute;
             top: 16px;
@@ -244,12 +271,11 @@
             transform: scale(1.08);
         }
 
-        /* Video Controls Overlay */
+        /* Video Controls Overlay (No Blur, Transparent background) */
         .video-controls-overlay {
             position: absolute;
             inset: 0;
-            background: rgba(0, 0, 0, 0.55);
-            backdrop-filter: blur(4px);
+            background: transparent;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -266,7 +292,7 @@
         }
 
         .ctrl-action-btn {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(0, 0, 0, 0.7);
             border: 1px solid rgba(255, 255, 255, 0.3);
             color: #FFFFFF;
             width: 44px;
@@ -331,13 +357,13 @@
             line-height: 1.3;
         }
 
-        /* Navigation Arrows (Desktop & Mobile Side Gutters) */
+        /* Navigation Arrows (Side Gutters - Fully Clear of Video) */
         .carousel-nav-btn {
-            background: rgba(20, 20, 20, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(20, 20, 20, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             color: #FFFFFF;
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             font-size: 16px;
             cursor: pointer;
@@ -355,11 +381,11 @@
         .carousel-nav-btn:hover {
             background: #FFFFFF;
             color: #121212;
-            transform: translateY(-50%) scale(1.08);
+            transform: translateY(-50%) scale(1.1);
         }
 
-        .prev-btn { left: 10px; }
-        .next-btn { right: 10px; }
+        .prev-btn { left: 12px; }
+        .next-btn { right: 12px; }
 
         /* Carousel Indicators Bar */
         .carousel-controls-bar {
@@ -392,9 +418,9 @@
             border-radius: 4px;
         }
 
-        /* Frosted-Glass Subcategories Deck (Fixed Scroll Alignment) */
+        /* Individual Transparent Category Buttons Deck */
         .glass-filter-deck-wrapper {
-            max-width: 900px;
+            max-width: 950px;
             margin: 35px auto 0 auto;
             padding: 0 20px;
             overflow-x: auto;
@@ -406,43 +432,48 @@
         }
 
         .glass-filter-deck {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 14px 24px;
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
             white-space: nowrap;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            padding: 6px 0;
         }
 
         .filter-btn {
-            background: transparent;
-            border: none;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             font-family: inherit;
             font-size: 13px;
             font-weight: 500;
-            color: #888888;
+            color: #AAAAAA;
             cursor: pointer;
-            padding: 8px 14px;
-            border-radius: 10px;
-            transition: all 0.3s ease;
+            padding: 10px 18px;
+            border-radius: 12px;
+            transition: all 0.25s ease;
         }
 
         .filter-btn:hover {
             color: #FFFFFF;
-            background: rgba(255, 255, 255, 0.06);
+            background: #FFFFFF;
+            border-color: #FFFFFF;
         }
 
         .filter-btn.active {
             color: #121212;
             background: #FFFFFF;
+            border-color: #FFFFFF;
             font-weight: 600;
-            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.25);
+        }
+
+        .scroll-categories-hint {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 11px;
+            color: #777777;
+            letter-spacing: 0.5px;
+            display: none;
         }
 
         /* Contact Page Styles */
@@ -514,7 +545,7 @@
             transform: translateY(-1px);
         }
 
-        /* Modal Popup Styling */
+        /* Modal Popups Styling */
         .modal {
             display: none;
             position: fixed;
@@ -523,7 +554,7 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(5px);
             justify-content: center;
             align-items: center;
@@ -541,6 +572,25 @@
             color: #E0E0E0;
         }
 
+        .video-modal-content {
+            background: #000;
+            padding: 0;
+            width: 90%;
+            max-width: 440px;
+            height: 80vh;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .video-modal-content video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
         .close-btn {
             position: absolute;
             top: 15px;
@@ -549,6 +599,7 @@
             font-weight: bold;
             cursor: pointer;
             color: #888;
+            z-index: 10;
         }
 
         .close-btn:hover {
@@ -609,17 +660,20 @@
 
         /* Mobile Responsive Adjustments */
         @media (max-width: 768px) {
+            .scroll-categories-hint {
+                display: block;
+            }
             .carousel-stage-wrapper {
                 max-width: 100%;
                 height: 460px;
             }
             .carousel-nav-btn {
-                width: 36px;
-                height: 36px;
+                width: 38px;
+                height: 38px;
                 font-size: 14px;
             }
-            .prev-btn { left: 6px; }
-            .next-btn { right: 6px; }
+            .prev-btn { left: 8px; }
+            .next-btn { right: 8px; }
             .carousel-card {
                 width: 260px;
                 height: 420px;
@@ -635,9 +689,6 @@
             }
             .hero-section h1 {
                 font-size: 32px;
-            }
-            .glass-filter-deck {
-                justify-content: flex-start;
             }
         }
     </style>
@@ -690,16 +741,20 @@
                 <div class="carousel-indicators" id="carouselIndicators"></div>
             </div>
 
-            <!-- Frosted-Glass Subcategories Deck -->
+            <!-- Individual Transparent Category Buttons Deck -->
             <div class="glass-filter-deck-wrapper">
-                <div class="glass-filter-deck">
+                <div class="glass-filter-deck" id="filterDeck">
                     <button class="filter-btn active" data-filter="Selected Works">Selected Works</button>
+                    <button class="filter-btn" data-filter="All">All</button>
                     <button class="filter-btn" data-filter="Automotive">Automotive</button>
                     <button class="filter-btn" data-filter="Events">Events</button>
                     <button class="filter-btn" data-filter="Podcast">Podcast</button>
                     <button class="filter-btn" data-filter="Realtor">Realtor</button>
                     <button class="filter-btn" data-filter="Hospitality">Hospitality</button>
                     <button class="filter-btn" data-filter="Nightlife">Nightlife</button>
+                </div>
+                <div class="scroll-categories-hint">
+                    <span>← Swipe categories to explore more →</span>
                 </div>
             </div>
         </section>
@@ -754,6 +809,14 @@
         </div>
     </div>
 
+    <!-- Video Enlarge Fullscreen Modal -->
+    <div id="videoModal" class="modal">
+        <div class="video-modal-content">
+            <span class="close-btn" id="closeVideoModal">&times;</span>
+            <video id="enlargedVideo" controls autoplay playsinline></video>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="site-footer">
         <p>Created by Divy Garg</p>
@@ -784,7 +847,7 @@
             });
         });
 
-        // Master Video Database with updated Selected Works order (Club Velocity left, MG Cyberster center, Doctor Podcast right, Indian Realtor last corner)
+        // Master Video Database
         const videoData = [
             {
                 "title": "Club Velocity",
@@ -831,7 +894,7 @@
         ];
 
         let currentCategoryVideos = videoData.filter(v => v.isSelected);
-        let currentIndex = 1; // Starts at 1 so MG Cyberster is center, Club Velocity is left, Doctor Podcast is right
+        let currentIndex = 1; // MG Cyberster center
 
         function renderCarousel() {
             const container = document.getElementById('carouselContainer');
@@ -860,10 +923,13 @@
 
                 card.innerHTML = `
                     <div class="video-wrapper">
-                        <video muted playsinline loop class="rotatable-video">
+                        <video muted playsinline loop preload="auto" class="rotatable-video">
                             <source src="${video.src}" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
+                        <button class="expand-btn" aria-label="Enlarge video" title="Enlarge View">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                        </button>
                         <button class="rotate-btn" aria-label="Rotate video" title="Rotate Clip">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.73-5.73"/></svg>
                         </button>
@@ -879,6 +945,7 @@
                     </div>
                 `;
 
+                const expandBtn = card.querySelector('.expand-btn');
                 const rotateBtn = card.querySelector('.rotate-btn');
                 const vid = card.querySelector('video');
                 const videoWrapper = card.querySelector('.video-wrapper');
@@ -886,6 +953,17 @@
                 const rewindBtn = card.querySelector('.rewind-btn');
                 const forwardBtn = card.querySelector('.forward-btn');
                 let rotationAngle = 0;
+                let hideControlsTimeout = null;
+
+                // Enlarge Modal Logic
+                expandBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const videoModal = document.getElementById('videoModal');
+                    const enlargedVideo = document.getElementById('enlargedVideo');
+                    enlargedVideo.src = video.src;
+                    videoModal.style.display = 'flex';
+                    enlargedVideo.play().catch(err => console.log(err));
+                });
 
                 // Rotate button logic
                 rotateBtn.addEventListener('click', (e) => {
@@ -898,10 +976,24 @@
                     }
                 });
 
-                // Toggle controls overlay on video wrapper click
+                // Toggle controls overlay on wrapper click with 0.5s auto-hide timer
                 videoWrapper.addEventListener('click', (e) => {
                     if (card.classList.contains('card-center')) {
-                        card.classList.toggle('show-controls');
+                        // Clear any active timer so it resets smoothly on rapid taps
+                        if (hideControlsTimeout) {
+                            clearTimeout(hideControlsTimeout);
+                            hideControlsTimeout = null;
+                        }
+
+                        if (card.classList.contains('show-controls')) {
+                            card.classList.remove('show-controls');
+                        } else {
+                            card.classList.add('show-controls');
+                            // Auto hide after 500ms (half a second)
+                            hideControlsTimeout = setTimeout(() => {
+                                card.classList.remove('show-controls');
+                            }, 500);
+                        }
                     } else if (positionClass === 'card-left') {
                         prevSlide();
                     } else if (positionClass === 'card-right') {
@@ -921,13 +1013,13 @@
                     }
                 });
 
-                // Rewind 10 seconds
+                // Rewind 10s
                 rewindBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     vid.currentTime = Math.max(0, vid.currentTime - 10);
                 });
 
-                // Forward 10 seconds
+                // Forward 10s
                 forwardBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     vid.currentTime = Math.min(vid.duration, vid.currentTime + 10);
@@ -944,7 +1036,7 @@
                 indicators.appendChild(dot);
             });
 
-            // Automated Play/Pause for center card
+            // Handle Autoplay for center card
             const cards = container.querySelectorAll('.carousel-card');
             cards.forEach(card => {
                 const vid = card.querySelector('video');
@@ -954,7 +1046,7 @@
                         vid.play().then(() => {
                             if(playPauseBtn) playPauseBtn.textContent = '❚❚';
                         }).catch(error => {
-                            console.log("Autoplay restricted:", error);
+                            console.log("Autoplay restricted by browser:", error);
                         });
                     } else {
                         vid.pause();
@@ -978,7 +1070,7 @@
         document.getElementById('nextBtn').addEventListener('click', nextSlide);
         document.getElementById('prevBtn').addEventListener('click', prevSlide);
 
-        // Filter logic & Selected Works Header toggle
+        // Filter logic
         const filterBtns = document.querySelectorAll('.filter-btn');
         const selectedWorksHeader = document.getElementById('selectedWorksHeader');
 
@@ -990,8 +1082,12 @@
                 
                 if (category === 'Selected Works') {
                     currentCategoryVideos = videoData.filter(v => v.isSelected);
-                    currentIndex = 1; // MG Cyberster center
+                    currentIndex = 1;
                     selectedWorksHeader.style.display = 'block';
+                } else if (category === 'All') {
+                    currentCategoryVideos = [...videoData];
+                    currentIndex = 0;
+                    selectedWorksHeader.style.display = 'none';
                 } else {
                     currentCategoryVideos = videoData.filter(v => v.category === category);
                     currentIndex = 0;
@@ -1003,19 +1099,37 @@
 
         renderCarousel();
 
-        // Modal Pop-up Functionality
-        const modal = document.getElementById('bioModal');
+        // Modal Functionality
+        const bioModal = document.getElementById('bioModal');
         const modalBtn = document.getElementById('profileModalBtn');
         const aboutNavBtn = document.getElementById('aboutNavBtn');
         const closeModal = document.getElementById('closeModal');
 
-        modalBtn.addEventListener('click', () => { modal.style.display = 'flex'; });
+        const videoModal = document.getElementById('videoModal');
+        const closeVideoModal = document.getElementById('closeVideoModal');
+        const enlargedVideo = document.getElementById('enlargedVideo');
+
+        modalBtn.addEventListener('click', () => { bioModal.style.display = 'flex'; });
         aboutNavBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            modal.style.display = 'flex';
+            bioModal.style.display = 'flex';
         });
-        closeModal.addEventListener('click', () => { modal.style.display = 'none'; });
-        window.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
+        closeModal.addEventListener('click', () => { bioModal.style.display = 'none'; });
+        
+        closeVideoModal.addEventListener('click', () => {
+            videoModal.style.display = 'none';
+            enlargedVideo.pause();
+            enlargedVideo.src = '';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === bioModal) bioModal.style.display = 'none';
+            if (e.target === videoModal) {
+                videoModal.style.display = 'none';
+                enlargedVideo.pause();
+                enlargedVideo.src = '';
+            }
+        });
     </script>
 </body>
 </html>
