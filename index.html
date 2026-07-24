@@ -996,7 +996,7 @@
                 currentIndex = 0;
             }
 
-            const showCompareButton = video => video.hasTransformation && currentFilter !== 'Selected Works' && currentFilter !== 'All';
+            const showCompareButton = video => video.hasTransformation;
 
             currentCategoryVideos.forEach((video, index) => {
                 const card = document.createElement('div');
